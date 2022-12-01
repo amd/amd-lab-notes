@@ -350,4 +350,6 @@ In part two of this series we will introduce optimization techniques aimed at re
 which are valuable not only for stencil kernels, but also for other bandwidth limited 
 kernels that use a regular, non-contiguous memory access patterns.
 
+[Accompanying code examples](https://github.com/amd/amd-lab-notes/tree/release/finite-difference/examples)
+
 [^1]:Benchmarks do not represent official performance numbers, but reflect the impact of the improvements made during our development work. Actual performance depends on system configuration and environment settings

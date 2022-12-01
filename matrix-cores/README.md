@@ -244,7 +244,7 @@ The layout for output $D$ and input $C$ is the same as the layout for input $B$.
 
 ## A Note on rocWMMA
 We have presented only three examples of leveraging AMD Matrix cores using
-compiler intrinsics. More examples can be found in the `src` directory. 
+compiler intrinsics. [More examples can be found here](https://github.com/amd/amd-lab-notes/tree/release/matrix-cores). 
 Note that the builtin functions may change in the future, so it may be better
 to use AMD's rocWMMA C++ library instead for accelerating mixed precision MFMA 
 operations. The rocWMMA API facilitates breaking down matrix 
