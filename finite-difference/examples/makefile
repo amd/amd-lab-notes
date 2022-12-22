@@ -25,7 +25,7 @@ FLAGS=-O3 -std=c++17
 #TEMPS=true
 #THEORY=true
 DOUBLE=true
-EXAMPLE=kernel1
+EXAMPLE=kernel1 kernel2 kernel3
 
 ifeq "$(DOUBLE)" "true"
 	PRECISION=-DDOUBLE
@@ -46,7 +46,7 @@ endif
 all: $(EXAMPLE)
 
 $(EXAMPLE):
-	$(CC) -o laplacian_$(SUFFIX)_$@ laplacian.cpp $(FLAGS) $(PRECISION) -D$@
+	$(CC) -o laplacian_$(SUFFIX)_$@ laplacian.cpp $(FLAGS) $(PRECISION) -include $@.hpp
 ifeq "$(TEMPS)" "true"
 	mkdir -p temps
 	mv *.s temps

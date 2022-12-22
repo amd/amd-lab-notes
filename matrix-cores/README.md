@@ -259,6 +259,8 @@ generation of kernel assembly. More details are available in the [rocWMMA repo][
 - [AMD CDNA Architecture Whitepaper](https://www.amd.com/system/files/documents/amd-cdna-whitepaper.pdf)
 - [AMD CDNA™ 2 Architecture Whitepaper](https://www.amd.com/system/files/documents/amd-cdna2-white-paper.pdf)
 
+If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
+
 <!--List of URLs referenced in text above-->
 [cdna_isa_mai]: https://developer.amd.com/wp-content/resources/CDNA2_Shader_ISA_18November2021.pdf#%5B%7B%22num%22%3A219%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C0%2C792%2Cnull%5D "MFMA Operations in CDNA2"
 [rocwmma_repo_link]: https://github.com/ROCmSoftwarePlatform/rocWMMA "rocWMMA repo"

@@ -31,12 +31,15 @@ SOFTWARE.
 
     ./laplacian <nx> <ny> <nz> <blk_x> <blk_y> <blk_z>
 */
-#include "hip/hip_runtime.h"
 #include <iostream>
 #include <math.h>
 #include <stdio.h>
 #include <assert.h>
 #include <vector>
+#ifndef KERNEL
+#define KERNEL 1
+#include "kernel1.hpp"
+#endif
 
 // HIP error check
 #define HIP_CHECK(stat)                                           \
@@ -49,10 +52,6 @@ SOFTWARE.
     }                                                             \
 }
 
-// Default thread block sizes
-int BLK_X = 256;
-int BLK_Y = 1;
-int BLK_Z = 1;
 
 #ifdef DOUBLE
 using precision = double;
@@ -61,10 +60,6 @@ using precision = float;
 #endif
 using namespace std;
 
-#ifdef kernel1
-#define kernel 1
-#include "kernel1.hpp"
-#endif
 
 template <typename T>
 __global__ void test_function_kernel(T *u, int nx, int ny, int nz,
@@ -153,14 +148,19 @@ int check(T *d_f, int nx, int ny, int nz, T hx, T hy, T hz, T tolerance=1e-6) {
 
 int main(int argc, char **argv)
 {
-
+    // Default thread block sizes
+    int BLK_X = 256;
+    int BLK_Y = 1;
+    int BLK_Z = 1;
+    
+    // Default problem size
     size_t nx = 512, ny = 512, nz = 512;
-    int num_iter = 500;
 #ifdef DOUBLE
-    precision tolerance = 1e-5;
+    precision tolerance = 3e-6;
 #else
-    precision tolerance = 1e-1;
+    precision tolerance = 3e-1;
 #endif
+    int num_iter = 100;
 
     if (argc > 1) nx = atoi(argv[1]);
     if (argc > 2) ny = atoi(argv[2]);
@@ -168,8 +168,20 @@ int main(int argc, char **argv)
     if (argc > 4) BLK_X = atoi(argv[4]);
     if (argc > 5) BLK_Y = atoi(argv[5]);
     if (argc > 6) BLK_Z = atoi(argv[6]);
-    
-    cout << "Kernel: " << kernel << endl;
+#ifndef LB
+#define LB 1024
+#endif
+    if (BLK_X * BLK_Y * BLK_Z > LB) {
+        cout << "WARNING: input thread block size " << BLK_X <<"*" << BLK_Y << "*" << BLK_Z;
+        cout << " exceeds limit " << LB << ", resetting to " << LB << "*1*1" << endl;
+        BLK_X = LB;
+        BLK_Y = 1;
+        BLK_Z = 1;
+    }
+    cout << "Kernel: " << KERNEL << endl;
+#ifdef m
+    cout << "Unrolling factor: " << m << endl;
+#endif
 #ifdef DOUBLE
     cout << "Precision: double" << endl;
 #else
@@ -202,7 +214,7 @@ int main(int argc, char **argv)
     test_function(d_u, nx, ny, nz, hx, hy, hz);
 
     // Compute Laplacian (1/2) (x(x-1) + y(y-1) + z(z-1)) = 3 for all interior points
-    laplacian(d_f, d_u, nx, ny, nz, hx, hy, hz);
+    laplacian(d_f, d_u, nx, ny, nz, BLK_X, BLK_Y, BLK_Z, hx, hy, hz);
 
     // Verification
     int error = check(d_f, nx, ny, nz, hx, hy, hz, tolerance);
@@ -210,19 +222,20 @@ int main(int argc, char **argv)
         cout << "Correctness test failed. Pointwise error larger than " << tolerance << endl;
     
     // Timing
+    float total_elapsed = 0;
+    float elapsed;
     hipEvent_t start, stop;
     HIP_CHECK( hipEventCreate(&start) );
-    HIP_CHECK( hipEventCreate(&stop) );
-    float total_elapsed = 0;
+    HIP_CHECK( hipEventCreate(&stop)  );
 
     for (int iter = 0; iter < num_iter; ++iter) {
         // Flush cache
-        HIP_CHECK( hipDeviceSynchronize()    );
-        HIP_CHECK( hipEventRecord(start)     );
-        laplacian(d_f, d_u, nx, ny, nz, hx, hy, hz);
-        HIP_CHECK( hipEventRecord(stop)      );
-        HIP_CHECK( hipEventSynchronize(stop) );
-        float elapsed;
+        HIP_CHECK( hipDeviceSynchronize()                     );
+        HIP_CHECK( hipEventRecord(start)                      );
+        laplacian(d_f, d_u, nx, ny, nz, BLK_X, BLK_Y, BLK_Z, hx, hy, hz);
+        HIP_CHECK( hipGetLastError()                          );
+        HIP_CHECK( hipEventRecord(stop)                       );
+        HIP_CHECK( hipEventSynchronize(stop)                  );
         HIP_CHECK( hipEventElapsedTime(&elapsed, start, stop) );
         total_elapsed += elapsed;
     }

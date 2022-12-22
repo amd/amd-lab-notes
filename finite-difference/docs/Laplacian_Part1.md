@@ -64,6 +64,7 @@ $$+ \frac{u(x,y-h_y,z) - 2u(x,y,z) + u(x,y+h_y,z)}{h_y^2} $$
 $$+ \frac{u(x,y,z-h_z) - 2u(x,y,z) + u(x,y,z+h_z)}{h_z^2}$$
 
 The following code example demonstrates how to implement the Laplacian stencil in host code:
+
 ```C++
 template <typename T>
 void laplacian_host(T *h_f, const T *h_u, T hx, T hy, T, hz, int nx, int ny,
@@ -84,6 +85,7 @@ int nz) {
 #undef f
 }
 ```
+
 The host code uses C-preprocessor macros to more easily translate the math notation $u(x,y,z)$ into
 code: `u(i, j, k)` - you will learn more about this translation soon. The function `laplacian_host` takes
 the input, `h_u[]`, and output, `h_f[]`, and expects them to at least contain `nx * ny * nz` elements each (the number of grid points in each direction). To prevent memory access violations due to out of bounds errors, the loop bounds exclude the first and last elements in each grid direction.
@@ -96,6 +98,7 @@ This distinction will become important when we visit the device code.
 ## Data layout
 The 3D data is laid out so that grid points in the `i`-direction are contiguous in memory whereas 
 grid points in the `k`-direction are strided by `nx * ny`. This mapping is exemplified by the macro:
+
 ```C
 #define u(i, j, k) h_u[(i) + (j) * nx  + (k) * nx * ny]
 ```
@@ -123,6 +126,7 @@ One of the goals of this blog is to show how to efficiently treat this memory ac
 ## HIP implementation
 To begin, consider a large cube where `nx = ny = nz = 512`. 
 We first allocate memory for both the input array `d_u` and the output array `d_f` using `double` precision:
+
 ```c++
 // Parameters
 using precision = double; 
@@ -144,9 +148,10 @@ The `d_u` input array is initialized using a quadratic test function that simpli
 verifying correctness (not shown for brevity). 
 
 The below code snippet presents our initial HIP implementation of the Laplacian:
+
 ```c++
 template <typename T>
-__global__ void laplacian_kernel1(T * f, const T * u, int nx, int ny, int nz, T invhx2, T invhy2, T invhz2, T invhxyz2) {
+__global__ void laplacian_kernel(T *__restrict__ f, const T *__restrict__ u, int nx, int ny, int nz, T invhx2, T invhy2, T invhz2, T invhxyz2) {
 
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
@@ -169,7 +174,7 @@ __global__ void laplacian_kernel1(T * f, const T * u, int nx, int ny, int nz, T 
 } 
 
 template <typename T>
-void laplacian(T *d_f, T *d_u, int nx, int ny, int nz, T hx, T hy, T hz) {
+void laplacian(T *d_f, T *d_u, int nx, int ny, int nz, int BLK_X, int BLK_Y, int BLK_Z, T hx, T hy, T hz) {
 
     dim3 block(BLK_X, BLK_Y, BLK_Z);
     dim3 grid((nx - 1) / block.x + 1, (ny - 1) / block.y + 1, (nz - 1) / block.z + 1);
@@ -177,11 +182,12 @@ void laplacian(T *d_f, T *d_u, int nx, int ny, int nz, T hx, T hy, T hz) {
     T invhy2 = (T)1./hy/hy;
     T invhz2 = (T)1./hz/hz;
     T invhxyz2 = -2. * (invhx2 + invhy2 + invhz2);
-    laplacian_kernel1<<<grid, block>>>(d_f, d_u, nx, ny, nz, invhx2, invhy2, invhz2, invhxyz2);
-    HIP_CHECK( hipGetLastError() );
+
+    laplacian_kernel<<<grid, block>>>(d_f, d_u, nx, ny, nz, invhx2, invhy2, invhz2, invhxyz2);
 } 
 ```
-The `laplacian` host function is responsible for launching the device kernel, `laplacian_kernel1`,
+
+The `laplacian` host function is responsible for launching the device kernel, `laplacian_kernel`,
 with a thread block size of `BLK_X = 256, BLK_Y = 1, BLK_Z = 1`. 
 The current thread block size where `BLK_X * BLK_Y * BLK_Z = 256` is a recommended default choice
 because it maps well to hardware work scheduler, but other choices may perform better. In general, choosing this parameter for performance may be highly dependent on the problem size, kernel implementation, and hardware characteristics of the device. 
@@ -206,6 +212,7 @@ issue with block sizes that do not evenly divide the problem size. If we pick, s
 second thread block would have work to do. 
 
 The main computation, 
+
 ```c++
     // Compute the result of the stencil operation
     f[pos] = u[pos] * invhxyz2
@@ -213,6 +220,7 @@ The main computation,
            + (u[pos - nx]    + u[pos + nx]) * invhy2
            + (u[pos - slice] + u[pos + slice]) * invhz2;
 ```
+
 accesses the array `u` multiple times. For each access, the compiler will generate a global load
 instruction that will access data from global memory unless this data is already present in cache. As we will
 see, these global load instructions can have significant performance implications.
@@ -247,17 +255,21 @@ compute bound. Thus, our optimizations will focus on addressing memory bottlenec
 For performance evaluation, we can use *effective memory bandwidth* as our figure of merit (FOM).
 Roughly speaking, the effective memory bandwidth is the average rate of data transfer considering the least amount of data that needs
 to move through the entire memory subsystem: from high-latency off-chip HBM to low-latency registers. The effective memory bandwidth is defined as
+
 ```c++
 effective_memory_bandwidth = (theoretical_fetch_size + theoretical_write_size) / average_kernel_execution_time;
 
 ```
+
 To measure the average kernel execution time, we use the function `hipEventElapsedTime()`  (see the accompanying `laplacian.cpp` 
 for full implementation details). The formula for calculating the theoretical fetch and write sizes 
 (in bytes) of an `nx * ny * nz` cube are:
+
 ```c++
 theoretical_fetch_size = ((nx * ny * nz - 8 - 4 * (nx - 2) - 4 * (ny - 2) - 4 * (nz - 2) ) * sizeof(double); 
 theoretical_write_size = ((nx - 2) * (ny - 2) * (nz - 2)) * sizeof(double); 
 ```
+
 Due to the shape of the stencil, the theoretical fetch size accounts for reading all grid points in `d_u` except for the 8 corners and 12 edges of the cube. In the theoretical write size, only the interior grid points in `d_f` are written back to memory. These
 calculations overlook memory access granularity and, again, assume an infinite cache. Thus, they place a lower bound on the
 actual data movement. 
@@ -270,7 +282,7 @@ Kernel: 1
 Precision: double
 nx,ny,nz = 512, 512, 512
 block sizes = 256, 1, 1
-Laplacian kernel took: 2.63997 ms, effective memory bandwidth: 808.684 GB/s 
+Laplacian kernel took: 2.62216 ms, effective memory bandwidth: 814.176 GB/s 
 ```
 For an optimized kernel and sufficiently large workload capable of saturating the device, the effective memory bandwidth should be as close as possible to
 the peak theoretical HBM bandwidth. Accomplishing this task requires meeting two objectives:
@@ -289,6 +301,7 @@ is that some of the waves are stalled and ineligible for issuing memory instruct
 data dependencies. To understand what the bottleneck is and address it, we need to collect performance counter data. 
 
 To this end, we use the AMD ROCm™ profiler (`rocprof`) to capture three important metrics:
+
 ```
 FETCH_SIZE : The total kilobytes fetched from the video memory. This is
              measured with all extra fetches and any cache or memory effects
@@ -299,22 +312,27 @@ WRITE_SIZE : The total kilobytes written to the video memory. This is measured
 L2CacheHit : The percentage of fetch, write, atomic, and other instructions that
              hit the data in L2 cache. Value range: 0% (no hit) to 100% (optimal).
 ```
+
 Note that the sum of `FETCH_SIZE` and `WRITE_SUM` may not truly represent all memory traffic. Nonetheless these metrics can 
 certainly provide greater insight into the design of the HIP kernels.
 Additional metrics can be queried from `rocprof` (see `rocprof --list-basic` and `rocprof --list-derived` for options). 
 `rocprof` allows us to organize our requests within ascii text files.
 For example, in the included work we use `rocprof_input.txt`:
+
 ```
 pmc: FETCH_SIZE
 pmc: WRITE_SIZE
 pmc: L2CacheHit
-kernel: laplacian_kernel1 laplacian_kernel2 laplacian_kernel3 laplacian_kernel4 laplacian_kernel5
+kernel: laplacian_kernel
 ```
+
 which will capture the performance counters (pmc) `FETCH_SIZE`, `WRITE_SIZE`, and `L2CacheHit` for the listed kernels.
 We can run this against our executables using the command
+
 ```
-$ rocprof -i rocprof_input.txt -o rocprof_output.csv laplacian_dp_kernel1
+$ rocprof -i rocprof_input.txt -o rocprof_output.csv laplacian_dp_kernel
 ``` 
+
 which will generate a `rocprof_output.csv` file containing the requested metrics for each kernel launch.
 For more information on `rocprof` we defer all interested readers to the 
 [ROCm™ Profiler documentation](https://rocmdocs.amd.com/en/latest/ROCm_Tools/ROCm-Tools.html).
@@ -333,7 +351,7 @@ the `FETCH_SIZE` is nearly doubled. This observation tells us that about 50 % of
 If we can improve the stencil reuse to 100 %, the `FETCH_SIZE` would reduce by over 0.9 GB and in turn reduce the total memory traffic by 44 %. This reduction
 could potentially translate into a 1.44x speedup of the kernel execution time, assuming HBM bandwidth
 saturation remains the same. Therefore, a 
-more realistic upper bound on effective memory bandwidth would be around ` 808.684 GB/s * 1.44 = 1165 GB/s`, which is about 71 %[^1] of the 
+more realistic upper bound on effective memory bandwidth would be around ` 814.176 GB/s * 1.44 = 1172 GB/s`, which is about 71 %[^1] of the 
 peak theoretical HBM bandwidth of `1638.4 GB/s` per GCD. 
 
 There are several different approaches to optimizing finite difference kernels in general.
@@ -352,4 +370,6 @@ kernels that use a regular, non-contiguous memory access patterns.
 
 [Accompanying code examples](https://github.com/amd/amd-lab-notes/tree/release/finite-difference/examples)
 
-[^1]:Benchmarks do not represent official performance numbers, but reflect the impact of the improvements made during our development work. Actual performance depends on system configuration and environment settings
+If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
+
+[^1]:Testing conducted using ROCm version 5.3.0-63. Benchmarks do not represent official performance numbers, but reflect the impact of the improvements made during our development work. Actual performance depends on system configuration and environment settings

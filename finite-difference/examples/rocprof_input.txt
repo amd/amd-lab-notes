@@ -22,4 +22,4 @@
 pmc: FETCH_SIZE
 pmc: WRITE_SIZE
 pmc: L2CacheHit
-kernel: laplacian_kernel1 laplacian_kernel2 laplacian_kernel3 laplacian_kernel4 laplacian_kernel5
+kernel: laplacian_kernel
