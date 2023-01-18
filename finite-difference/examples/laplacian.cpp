@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 #else
     precision tolerance = 3e-1;
 #endif
-    int num_iter = 100;
+    int num_iter = 1000;
 
     if (argc > 1) nx = atoi(argv[1]);
     if (argc > 2) ny = atoi(argv[2]);
@@ -180,7 +180,8 @@ int main(int argc, char **argv)
     }
     cout << "Kernel: " << KERNEL << endl;
 #ifdef m
-    cout << "Unrolling factor: " << m << endl;
+    cout << "Tiling factor: " << m << endl;
+    assert((ny % (BLK_Y * m) == 0) && "Grid size ny must be divisible by product of BLK_Y and tiling factor");
 #endif
 #ifdef DOUBLE
     cout << "Precision: double" << endl;
