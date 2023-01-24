@@ -3,3 +3,4 @@ entries:
 - file: finite-difference/docs/Laplacian_Part1
 - file: finite-difference/docs/Laplacian_Part2
 - file: matrix-cores/README
+- file: rocm-installation/README
