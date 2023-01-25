@@ -1,0 +1,37 @@
+table.scrollable-table {
+    overflow-x: scroll;
+    position: relative;
+    display: block;
+}
+table.scrollable-table::before {
+    content: "Scroll >>>>";
+    font-weight: bold;
+    animation-name: highlight-bounce;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    z-index: 10;
+    color: black;
+    background-color: #dcdcdcbf;
+    padding-left:5px;
+    padding-right:5px;
+}
+table.scrollable-table:hover::before {
+display: none;
+}
+@keyframes highlight-bounce {
+    0% {
+        margin-left:0px
+    }
+    20% {
+        margin-left:5px
+    }
+    40% {
+        margin-left:0px
+    }
+    80% {
+        margin-left:0px
+    }
+}
