@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Finite Difference Method - Laplacian Part 2
+# Finite difference method - Laplacian part 2
 
 In the previous Laplacian post, we developed a HIP implementation of a finite-difference stencil code designed around a Laplace operator. 
 The initial implementation was found to be memory bandwidth bound, meaning that its runtime was limited by the rate at which 

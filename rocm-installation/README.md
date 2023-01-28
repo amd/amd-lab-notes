@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# AMD ROCm™ Installation
+# AMD ROCm™ installation
 
 AMD ROCm™ is the first open-source software development platform for HPC/Hyperscale-class GPU computing. AMD ROCm™ brings the UNIX philosophy of choice, minimalism and modular software development to GPU computing. Please see the AMD [Open Software Platform for GPU](https://www.amd.com/en/graphics/servers-solutions-rocm) and [ROCm Informational Portal](https://docs.amd.com/) pages for more information. 
 
@@ -31,11 +31,11 @@ AMD ROCm™ is a brand name for the ROCm open software platform supporting GPUs 
 
  Three installation options will be described in this blog post:
 
- 1. Installation of ROCm using an AMD provided script
- 2. Support for multiple ROCm versions on one system
- 3. Installation of ROCm using Ubuntu's apt-get
+ 1. Installation of ROCm using an AMD provided script.
+ 2. Support for multiple ROCm versions on one system.
+ 3. Installation of ROCm using Ubuntu's apt-get.
 
-## Option 1:
+## Option 1
 
 AMD provides an installation script for specific operating system and ROCm versions. The script name and download location can be different for each combination of O/S and ROCm so check the [How to Install page](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install) for your specific combination. We are using Ubuntu 20.04 and installing ROCm 5.4 and find that the script is named *amdgpu-install_5.4.50400-1_all*.
 
@@ -58,7 +58,7 @@ The ROCm code installs to /opt/rocm by default. You can verify that ROCm is inst
 ```
 and checking that the card was detected by the software. The supported GPU card will start with "GFX9". 
 
-## Option 2:
+## Option 2
 
 If ROCm is already installed, an old version can be removed and a new version may be installed. Alternatively, an additional version may be installed while keeping the old version. Installing an additional version creates a multi-version system and care must be used to ensure the proper paths are in the environment variables. For example, the current ```/opt/rocm``` may now be ```/opt/rocm-5.4.0``` or ```/opt/rocm-5.3.2``` depending on the installed ROCm versions. 
 
@@ -91,7 +91,7 @@ The ROCm code installs to /opt/rocm by default. You can verify that ROCm is inst
 ```
 and checking that the card was detected by the software. The supported GPU card will start with "GFX9". 
 
-## Option 3:
+## Option 3
 
 While AMD provides an installation script for specific operating system and ROCm versions, the script will ultimately install the software using the O/S standard installation software. In the case of Ubuntu, the script will use *apt-get* to  install ROCm.
 The full apt-get process is shown on the [How to Install page](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install). The steps below will install ROCm 5.4 with a custom version of the apt-get commands. 
@@ -125,4 +125,4 @@ and checking that the card was detected by the software. The supported GPU card 
 
 Note: It is not recommended to mix the apt-get and amdgpu-install methods. Pick one or the other approach for installing ROCm.
 
-If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
+If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com).

@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Finite Difference Method - Laplacian Part 1
+# Finite difference method - Laplacian part 1
 The finite difference method is a canonical example of a computational physics stencil discretization commonly used in applications ranging from geophysics (weather and oil \& gas) and electromagnetics (semiconductors and astrophysics) to gas dynamics (airflow and plasmas).
 Stencil codes are identified by an underlying requirement of accessing a local neighborhood of grid points (stencil) in order to evaluate a value at a single grid point, meaning that the performance of the algorithm is strongly tied its memory access pattern.
 GPUs haven proven to be well-suited for accelerating stencils codes due to the algorithm's regular structure, high degree of exposed parallelism, and efficient use of the GPU's high memory bandwidth.
