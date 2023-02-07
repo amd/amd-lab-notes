@@ -112,7 +112,7 @@ Thus, we focus our attention on optimizing loads in one of these two directions 
 ## Loop tiling
 
 As it stands, each thread computes a stencil 
-around a single grid point. What happens if we let each thread computes stencils of multiple grid points? 
+around a single grid point. What happens if we let each thread compute stencils of multiple grid points? 
 This will require more load instructions per thread but due to the 
 contiguous nature of the threading,
 these loads will be more likely to reuse cached values for `u`.
@@ -131,7 +131,7 @@ let's pick two, then each thread would perform two stores, but consider the numb
 f[pos]     = u[pos - 1]  + u[pos]     + u[pos + 1] 
 f[pos + 1] = u[pos]      + u[pos + 1] + u[pos + 2]
 ```
-Note that `u[pos]` and `u[pos + 1]` appear twice, which we means we only need to load them once. This 
+Note that `u[pos]` and `u[pos + 1]` appear twice, which means we only need to load them once. This 
 observation allows us to reuse the previously loaded value. To make this point clear, we can introduce two variables:
 ```c++
 double u0 = u[pos];
@@ -555,7 +555,7 @@ could have implications, as explained and addressed next.
 
 ## Reorder read access patterns
 
-After the optimization, there is no little to no speedup. While increasing the tile factor reduces 
+After the optimization, there is little to no speedup. While increasing the tile factor reduces 
 the loads per store ratio, it may not necessarily translate into a reduction in global data movement.
 For `FETCH_SIZE` to decrease, the data movement between L2 and global memory must decrease. As the load
 per store ratio increases, the number of read requests sent to L1 must decrease and L2 as well (assuming
