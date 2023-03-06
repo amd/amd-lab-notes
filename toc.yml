@@ -4,3 +4,4 @@ entries:
 - file: finite-difference/docs/Laplacian_Part2
 - file: matrix-cores/README
 - file: rocm-installation/README
+- file: mi200-memory-space-overview/MI200MemorySpaceOverview
