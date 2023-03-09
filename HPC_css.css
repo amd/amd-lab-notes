@@ -4,7 +4,7 @@ table.scrollable-table {
     display: block;
 }
 table.scrollable-table::before {
-    content: "Scroll >>>>";
+    content: "Scroll →";
     font-weight: bold;
     animation-name: highlight-bounce;
     animation-duration: 1.5s;
