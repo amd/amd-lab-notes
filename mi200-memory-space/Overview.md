@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
 
-# AMD Instinct™ MI200 Memory Space Overview
+# AMD Instinct™ MI200 GPU Memory Space Overview
 
 The HIP API supports a wide variety of allocation methods for host and device memory on accelerated systems.
 In this post, we will:
@@ -294,12 +294,12 @@ Importantly, SDMA engines are separate from the computing infrastructure, meanin
 The SDMA engines are mainly tuned for PCIe-4.0 x16, which means they are designed to operate at bandwidths up to 32 GB/s.
 
 An important feature of the MI250X platform used in ORNL's Frontier supercomputer is the Infinity Fabric™ interconnect between host and device.
-Infinity Fabric supports improved performance over standard PCIe-4.0 (usually ~50% more bandwidth); however, since the SDMA engine does not run at this speed, it will not max out the bandwidth of the faster interconnect.
+The Infinity Fabric interconnect supports improved performance over standard PCIe-4.0 (usually ~50% more bandwidth); however, since the SDMA engine does not run at this speed, it will not max out the bandwidth of the faster interconnect.
 
 We can counter this bandwidth limitation by bypassing the SDMA engine and replacing it with a type of copy kernel known as a "blit" kernel.
 Blit kernels will use the compute units on the GPU, thereby consuming compute resources, which may not always be beneficial.
 The easiest way to enable blit kernels is to set an environment variable `HSA_ENABLE_SDMA=0`, which will disable the SDMA engine.
-On systems where the GPU uses a PCIe interconnect instead of Infinity Fabric, blit kernels will not impact bandwidth, but will still consume compute resources.
+On systems where the GPU uses a PCIe interconnect instead of an Infinity Fabric interconnect, blit kernels will not impact bandwidth, but will still consume compute resources.
 The use of SDMA vs blit kernels also applies to MPI data transfers and GPU-GPU transfers, but we will save this discussion for a future blog post.
 
 ## Enabling Page Migration

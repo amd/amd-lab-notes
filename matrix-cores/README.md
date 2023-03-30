@@ -113,6 +113,9 @@ The matrix dimensions and number of blocks supported on CDNA2 GPUs are listed in
 |               |               |4  |4  |4  |4     |16    |128        |
 
 A complete list of all instructions supported by the CDNA2 Architecture can be found in the [AMD Instinct MI200 Instruction Set Architecture Reference Guide][cdna_isa_mai].
+AMD's [Matrix Instruction Calculator][matrix_instruction_calculator] tool allows generating more information such as
+computational throughput and register usage of MFMA instructions on AMD Radeon™ and
+AMD Instinct™ accelerators.
 
 ## Example 1 - V_MFMA_F32_16x16x4F32 
 Consider the matrix multiplication operation $D = A B$ where $M=N=16$ and $K=4$ and the elements are of type FP32. Assume that the input $C$ matrix contains zeroes for simplicity sake. We will demonstrate the use of the intrinsic function `__builtin_amdgcn_mfma_f32_16x16x4f32` that computes the sum of four outer products in one invocation. This function operates on a single block of matrices.
@@ -254,16 +257,27 @@ of GPU device code allowing matrix core acceleration may be compiled directly
 into your kernel device code. This can benefit from compiler optimization in the 
 generation of kernel assembly. More details are available in the [rocWMMA repo][rocwmma_repo_link].
 
+## A Note on the AMD Matrix Instruction Calculator Tool
+For those curious about how various MFMA instructions perform on AMD Radeon™ and
+AMD Instinct™ accelerators and would like to understand the mapping between matrix
+elements and hardware registers, we direct you to the [AMD Matrix
+Instruction Calculator][matrix_instruction_calculator] tool. This powerful tool can
+be used to describe WMMA instructions as well as MFMA ISA-level instructions for a
+given architecture.
+We welcome [issues](https://github.com/RadeonOpenCompute/amd_matrix_instruction_calculator/issues) and feedback from the community.
+
 ## References
 - [AMD Instinct MI200 Instruction Set Architecture Reference Guide](https://developer.amd.com/wp-content/resources/CDNA2_Shader_ISA_18November2021.pdf)
 - [AMD CDNA Architecture Whitepaper](https://www.amd.com/system/files/documents/amd-cdna-whitepaper.pdf)
 - [AMD CDNA™ 2 Architecture Whitepaper](https://www.amd.com/system/files/documents/amd-cdna2-white-paper.pdf)
+- [AMD Matrix Instruction Calculator Tool][matrix_instruction_calculator]
 
 If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
 
 <!--List of URLs referenced in text above-->
 [cdna_isa_mai]: https://developer.amd.com/wp-content/resources/CDNA2_Shader_ISA_18November2021.pdf#%5B%7B%22num%22%3A219%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C0%2C792%2Cnull%5D "MFMA Operations in CDNA2"
 [rocwmma_repo_link]: https://github.com/ROCmSoftwarePlatform/rocWMMA "rocWMMA repo"
+[matrix_instruction_calculator]: https://github.com/RadeonOpenCompute/amd_matrix_instruction_calculator "AMD Matrix Instruction Calculator Tool"
 
 
 

@@ -372,4 +372,4 @@ kernels that use a regular, non-contiguous memory access patterns.
 
 If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
 
-[^1]:Testing conducted using ROCm version 5.3.0-63. Benchmarks do not represent official performance numbers, but reflect the impact of the improvements made during our development work. Actual performance depends on system configuration and environment settings
+[^1]:Testing conducted using ROCm version 5.3.0-63. Benchmark results are not validated performance numbers, and are provided only to demonstrate relative performance improvements of code modifications. Actual performance results depend on multiple factors including system configuration and environment settings, reproducibility of the results is not guaranteed.
