@@ -35,3 +35,17 @@ display: none;
         margin-left:0px
     }
 }
+
+.imported-authors div.elementor:nth-child(1) div.elementor-author-box__name::after {
+    content: "(Corresponding author)";
+    font-size: medium;
+  }
+
+  .imported-authors div.elementor:nth-child(1) {
+    background-color: ghostwhite;
+  }
+
+  .imported-authors div.elementor {
+    padding: 10px;
+    margin: 5px;
+  }
