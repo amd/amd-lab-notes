@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Introduction to profiling tools for AMD Hardware
+# Introduction to profiling tools for AMD hardware
 
 Getting a code to be functionally correct is not always enough. In many industries, it is also required that
 applications and their complex software stack run as efficiently as possible to meet operational demands.
@@ -67,7 +67,7 @@ The following terms are used in this blog post:
 | [Roofline Analysis](https://enccs.github.io/AMD-ROCm-development/hierarchical_roofline/) | Hardware agnostic methodology for quantifying a workload's ability to saturate the given compute architecture in terms of floating-point compute and memory bandwidth |
 | Hardware Counters | Individual metrics which track how many times a certain event occurs in the hardware, such as bytes moved from L2 cache or a 32 bit floating point add performed |
 
-## What tools To use?
+## What tools to use?
 
 The first step in profiling is determining the right tool for the job. Whether one wants to collect
 traces on the CPU, GPU, or both, understand kernel behavior, or assess memory access patterns, performing such an analysis might
@@ -129,7 +129,7 @@ should be treated as "go-to" profiling tools for performance tuning and benchmar
  ### Figure 1
 ================ -->
 
-<img src="images/when-to-use-diagram-vert.png" width="80%" class="img-center">
+<img src="images/when-to-use-diagram-vert.jpg" width="80%" class="img-center">
 <p style="text-align:center">
 Figure 1: Use cases for a variety of AMD profiling tools.
 </p>
