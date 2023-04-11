@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
 
-# AMD Instinct™ MI200 GPU Memory Space Overview
+# AMD Instinct™ MI200 GPU memory space overview
 
 The HIP API supports a wide variety of allocation methods for host and device memory on accelerated systems.
 In this post, we will:
@@ -31,7 +31,7 @@ In this post, we will:
 
 We primarily focus on AMD's MI200 line of GPUs, however many of the concepts discussed within this post carry over to other GPUs and APIs.
 
-## Types of Memory Spaces
+## Types of memory spaces
 
 Working on heterogenous, accelerated systems implies that there are different memory and execution spaces available.
 Special care must be taken when managing memory to ensure that data is in the right place at the right time.
@@ -58,7 +58,7 @@ In this blog, we will use the term GPU to refer to the entire GPU and use GCD wh
 
 In the following sections, we introduce allocators and de-allocators for using the various memory spaces available in HIP.
 
-### Pageable Memory
+### Pageable memory
 
 Pageable host memory in HIP uses the standard allocator and deallocator:
 
@@ -81,7 +81,7 @@ deallocateHost_Pageable(T * ptr)
 Note that we can adjust pageable memory alignment to improve performance when working with GPUs, however, we will hold that discussion for a future blog post.
 By default, pageable memory is not accessible from device, but in the following sections, we will introduce [registering pageable memory](#registered-pageable-memory) and [enabling page migration](#enabling-page-migration) which workaround this restriction.
 
-### Non-Pageable (Pinned) Memory
+### Non-pageable (pinned) memory
 
 Non-pageable memory (aka pinned memory or page-locked memory) is host memory that is mapped into the address space of all GPUs, meaning that the pointer can be used on both host and device.
 Accessing host-resident pinned memory in device kernels is generally not recommended for performance, as it can force the data to traverse the host-device interconnect (e.g. PCIe), which is much slower than the on-device bandwidth (>40x on MI200).
@@ -131,7 +131,7 @@ On multi-socket systems it is important to ensure that pinned memory is located 
 In practice, pinned memory (coherent or non-coherent) is used to improve transfer times between host and device.
 For transfer operations, such as `hipMemcpy` or `hipMemcpyAsync`, using pinned memory instead of pageable memory on host can lead to a ~3x improvement in bandwidth.
 
-### Registered Pageable Memory
+### Registered pageable memory
 
 Registered pageable memory, as the name suggests, is a way of registering pageable memory with a GPU such that it can be directly accessed by a device kernel.
 Registration ensures that the GPU is aware of the host pointer, which will *effectively* turn the pageable allocation into a pinned allocation.
@@ -176,7 +176,7 @@ The purpose of registering pageable memory is to ensure that the data can be acc
 Registered memory is treated as `hipHostMallocCoherent` pinned memory, with equivalent performance.
 The main reason for registering pageable memory is for situations where a developer is not in control of the allocator for a given allocation but still needs the memory to be accessible on device.
 
-### Managed Memory
+### Managed memory
 
 Managed memory refers to universally addressable, or unified memory available on the MI200 series of GPUs.
 Much like `hipHostMallocCoherent` pinned memory, managed memory shares a pointer between host and device and (by default) supports fine-grained coherence, however, managed memory can also automatically migrate pages between host and device.
@@ -224,7 +224,7 @@ In the meantime, please see the [additional resources](#additional-resources) se
 Managed memory is used in cases where we want the HIP to automatically transfer ownership of data between host and device on demand, thereby simplifying memory management for the user.
 This memory space greatly simplifies the porting process when transitioning from CPU to GPU workloads.
 
-### Device Memory
+### Device memory
 
 Device memory is simply memory that is allocated on a specific device.
 Much like pinned host memory, device memory can be allocated as fine-grained or coarse-grained.
@@ -282,7 +282,7 @@ By default `hipMalloc` and `hipFree` are blocking calls, however, HIP recently a
 Device memory should be used whenever possible.
 Not only is it much more performant than accessing host memory on device, but it also gives more control over where memory is located in a system.
 
-## Improving Transfer Bandwidth
+## Improving transfer bandwidth
 
 In most cases, the default behavior for HIP in transferring data from a pinned host allocation to device will run at the limit of the interconnect.
 However, there are certain cases where the interconnect is not the bottleneck.
@@ -302,7 +302,7 @@ The easiest way to enable blit kernels is to set an environment variable `HSA_EN
 On systems where the GPU uses a PCIe interconnect instead of an Infinity Fabric interconnect, blit kernels will not impact bandwidth, but will still consume compute resources.
 The use of SDMA vs blit kernels also applies to MPI data transfers and GPU-GPU transfers, but we will save this discussion for a future blog post.
 
-## Enabling Page Migration
+## Enabling page migration
 
 On MI200 GPUs there is an option to automatically migrate pages of memory between host and device.
 This is important for managed memory, where the locality of the data is important for performance.
@@ -349,7 +349,7 @@ This blog is a very high-level overview of memory spaces on MI200, and we plan t
 
 If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com).
 
-## Additional Resources
+## Additional resources
 
 - [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/develop/docs/markdown/hip_programming_guide.md)
 - [ENCCS AMD Node Memory Model](https://enccs.github.io/AMD-ROCm-development/memory_model/)
