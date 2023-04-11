@@ -31,7 +31,7 @@ Matrix Core speedup compared to Vector Unit Performance for MI100 and MI250X. *N
 |FP32       |2x                         |2x                          |
 
 
-## Using AMD Matrix Cores
+## Using AMD matrix cores
 The Matrix Fused Multiply Add (MFMA) instructions in AMD CDNA GPUs operate on a per-wavefront basis, rather than on a per-lane (thread) basis: entries of the input and output matrices are distributed over the lanes of the wavefront's vector registers.
 
 AMD Matrix Cores can be leveraged in several ways. At a high level, one can use libraries such as rocBLAS or rocWMMA to do matrix operations on the GPU. For instance, rocBLAS may choose to use MFMA instructions if this is advantageous for the computations at hand. For a closer-to-the-metal approach, one can choose to
@@ -42,7 +42,7 @@ AMD Matrix Cores can be leveraged in several ways. At a high level, one can use 
 
 The coding examples in this post use some of the available compiler intrinsics for the MFMA instructions and show how to map entries of the input and output matrices to lanes of vector registers of the wavefront. All the examples use a single wavefront to compute a small matrix multiplication. The examples are not intended to show how to achieve high performance out of the MFMA operations.
 
-## MFMA Compiler Intrinsic Syntax
+## MFMA compiler intrinsic syntax
 Consider the following multiplication MFMA operation where all the operands $A$, $B$, $C$, and $D$ are matrices:
 $$D = A B + C$$
 
@@ -245,7 +245,7 @@ holds 4 matrices.
 
 The layout for output $D$ and input $C$ is the same as the layout for input $B$.
 
-## A Note on rocWMMA
+## A note on rocWMMA
 We have presented only three examples of leveraging AMD Matrix cores using
 compiler intrinsics. [More examples can be found here](https://github.com/amd/amd-lab-notes/tree/release/matrix-cores). 
 Note that the builtin functions may change in the future, so it may be better
@@ -257,7 +257,7 @@ of GPU device code allowing matrix core acceleration may be compiled directly
 into your kernel device code. This can benefit from compiler optimization in the 
 generation of kernel assembly. More details are available in the [rocWMMA repo][rocwmma_repo_link].
 
-## A Note on the AMD Matrix Instruction Calculator Tool
+## A note on the AMD Matrix Instruction Calculator tool
 For those curious about how various MFMA instructions perform on AMD Radeon™ and
 AMD Instinct™ accelerators and would like to understand the mapping between matrix
 elements and hardware registers, we direct you to the [AMD Matrix

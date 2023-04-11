@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Introduction to Profiling Tools for AMD Hardware
+# Introduction to profiling tools for AMD Hardware
 
 Getting a code to be functionally correct is not always enough. In many industries, it is also required that
 applications and their complex software stack run as efficiently as possible to meet operational demands.
@@ -67,7 +67,7 @@ The following terms are used in this blog post:
 | [Roofline Analysis](https://enccs.github.io/AMD-ROCm-development/hierarchical_roofline/) | Hardware agnostic methodology for quantifying a workload's ability to saturate the given compute architecture in terms of floating-point compute and memory bandwidth |
 | Hardware Counters | Individual metrics which track how many times a certain event occurs in the hardware, such as bytes moved from L2 cache or a 32 bit floating point add performed |
 
-## What Tools To Use?
+## What tools To use?
 
 The first step in profiling is determining the right tool for the job. Whether one wants to collect
 traces on the CPU, GPU, or both, understand kernel behavior, or assess memory access patterns, performing such an analysis might
@@ -136,7 +136,7 @@ Figure 1: Use cases for a variety of AMD profiling tools.
 
 ---
 
-## Overview of Profiling Tools
+## Overview of profiling tools
 
 In this section, we provide a brief overview of the above-mentioned AMD tools and some third-party toolkits.
 
@@ -271,9 +271,9 @@ collection/translation of data on the remote system and report it in local GUI
 > <greek>u</greek>Prof does have initial support for AMD CDNA&trade; GPUs, however, we recommend using [Omniperf](#omniperf), 
 [Omnitrace](#omnitrace), or [ROC-profiler](#roc-profiler) for profiling HIP workloads.
 
-### Other Third Party Tools
+### Other third-party tools
 
-In the High Performance Computing space, a number of third party profiling tools have enabled support for ROCm&trade; and AMD Instinct&trade; 
+In the High Performance Computing space, a number of third-party profiling tools have enabled support for ROCm&trade; and AMD Instinct&trade; 
 GPUs. This provides a platform for users to maintain a vendor independent approach to profiling, providing an easy-to-use and 
 high level suite of functionality, that can potentially provide a unified profiling experience across numerous architectures. 
 For users already familiar with these tools, it makes for another easy entry point into understanding performance of their 
@@ -286,7 +286,7 @@ Currently available third party profiling tools include:
 * [Vampir](https://vampir.eu/)
 * [CrayPat](https://support.hpe.com/hpesc/public/docDisplay?docLocale=en_US&docId=a00114165en_us) (_only for CrayOS platforms_)
 
-## Next Time
+## Next time
 Stay tuned as we release further posts in this series diving into the details of setting up and utilizing these 
 available tools. Complete with examples!
 
