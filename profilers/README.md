@@ -164,7 +164,9 @@ viewing what else is happening on the system during a performance bottleneck.
 ================
  ### Figure 2
 ================ -->
-<img src="images/omnitrace-timeline-example.png" width="100%" class="img-center">
+
+<img src="images/omnitrace-timeline-example.png" width="900" class="img-center">
+
 <p style="text-align:center">
 Figure 2: Omnitrace timeline trace example.
 </p>

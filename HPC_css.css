@@ -49,3 +49,9 @@ display: none;
     padding: 10px;
     margin: 5px;
   }
+
+@media (prefers-color-scheme: dark) {
+  .imported-authors div.elementor:nth-child(1) {
+  background-color: #6b6b6b;
+}
+}
