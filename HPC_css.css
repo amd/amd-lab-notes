@@ -1,57 +1,68 @@
 table.scrollable-table {
-    overflow-x: scroll;
-    position: relative;
-    display: block;
+  overflow-x: scroll;
+  position: relative;
+  display: block;
 }
 table.scrollable-table::before {
-    content: "Scroll →";
-    font-weight: bold;
-    animation-name: highlight-bounce;
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    z-index: 10;
-    color: black;
-    background-color: #dcdcdcbf;
-    padding-left:5px;
-    padding-right:5px;
+  content: "Scroll →";
+  font-weight: bold;
+  animation-name: highlight-bounce;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  z-index: 10;
+  color: black;
+  background-color: #dcdcdcbf;
+  padding-left:5px;
+  padding-right:5px;
 }
 table.scrollable-table:hover::before {
 display: none;
 }
 @keyframes highlight-bounce {
-    0% {
-        margin-left:0px
-    }
-    20% {
-        margin-left:5px
-    }
-    40% {
-        margin-left:0px
-    }
-    80% {
-        margin-left:0px
-    }
+  0% {
+      margin-left:0px
+  }
+  20% {
+      margin-left:5px
+  }
+  40% {
+      margin-left:0px
+  }
+  80% {
+      margin-left:0px
+  }
 }
 
-.imported-authors div.elementor:nth-child(1) div.elementor-author-box__name::after {
-    content: "(Corresponding author)";
-    font-size: medium;
-  }
+.imported-authors div.corresponding_author {
+  background-color: ghostwhite;
+}
 
-  .imported-authors div.elementor:nth-child(1) {
-    background-color: ghostwhite;
-  }
+.imported-authors div.corresponding_author div.elementor-author-box__name::after {
+  content: "(Corresponding author)";
+  font-size: medium;
+}
 
-  .imported-authors div.elementor {
-    padding: 10px;
-    margin: 5px;
-  }
+.imported-authors div.author div.elementor-author-box__name::after {
+  content: "(Author)";
+  font-size: medium;
+}
+
+.imported-authors div.reviewing_author div.elementor-author-box__name::after {
+content: "(Reviewer)";
+font-size: medium;
+}
+
+.imported-authors div.elementor-widget-author-box {
+padding: 10px;
+margin: 5px;
+margin-bottom: 20px;
+}
 
 @media (prefers-color-scheme: dark) {
-  .imported-authors div.elementor:nth-child(1) {
-  background-color: #6b6b6b;
+.imported-authors div.corresponding_author {
+background-color: #6b6b6b;
 }
 }
