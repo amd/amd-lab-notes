@@ -795,6 +795,6 @@ The next post in this series will answer some of these remaining open questions.
 
 [Accompanying code examples](https://github.com/amd/amd-lab-notes/tree/release/finite-difference/examples)
 
-If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com)
+If you have any questions or comments, please reach out to us on GitHub [Discussions](https://github.com/amd/amd-lab-notes/discussions)
 
 [^1]:Testing conducted using ROCm version 5.3.0-63. Benchmark results are not validated performance numbers, and are provided only to demonstrate relative performance improvements of code modifications. Actual performance results depend on multiple factors including system configuration and environment settings, reproducibility of the results is not guaranteed.

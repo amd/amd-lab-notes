@@ -292,4 +292,4 @@ Currently available third party profiling tools include:
 Stay tuned as we release further posts in this series diving into the details of setting up and utilizing these 
 available tools. Complete with examples!
 
-If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com).
+If you have any questions or comments, please reach out to us on GitHub [Discussions](https://github.com/amd/amd-lab-notes/discussions)

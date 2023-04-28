@@ -125,4 +125,4 @@ and checking that the card was detected by the software. The supported GPU card 
 
 Note: It is not recommended to mix the apt-get and amdgpu-install methods. Pick one or the other approach for installing ROCm.
 
-If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com).
+If you have any questions or comments, please reach out to us on GitHub [Discussions](https://github.com/amd/amd-lab-notes/discussions)

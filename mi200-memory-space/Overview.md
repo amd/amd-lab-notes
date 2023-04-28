@@ -347,7 +347,7 @@ Some don'ts:
 
 This blog is a very high-level overview of memory spaces on MI200, and we plan to do a deeper dive into managed memory, atomic operations, memory coherence, and performance in later posts.
 
-If you have any questions or comments, you can reach out to us on our [mailing list](mailto:dl.amd-lab-notes@amd.com).
+If you have any questions or comments, please reach out to us on GitHub [Discussions](https://github.com/amd/amd-lab-notes/discussions)
 
 ## Additional resources
 

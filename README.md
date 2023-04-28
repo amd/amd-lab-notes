@@ -54,3 +54,5 @@ but we expect users of other AMD graphics cards to also benefit from the strateg
 The repository containing all lab notes and associated code examples can be found at 
 [https://github.com/AMD/amd-lab-notes](https://github.com/AMD/amd-lab-notes).
 We hope that our pedagogical examples will inspire readers to accelerate their application code even further.
+
+If you have any questions or comments, please reach out to us on GitHub [Discussions](https://github.com/amd/amd-lab-notes/discussions)
