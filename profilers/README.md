@@ -41,11 +41,9 @@ With AMD's profiling tools, developers are able to gain important insight into h
 hardware and effectively diagnose potential bottlenecks contributing to poor performance. Developers targeting AMD
 GPUs have multiple tools available depending on their specific profiling needs. This post serves as an
 introduction to the various profiling tools offered by AMD and why a developer might leverage one over the other. This 
-post covers everything from low level profiling tools to extensive profiling suites and even provides clarity on other
-AMD tools bearing the "profiler" classification, but target AMD products outside the Instinct™ GPU product line used for
-High Performance Computing (HPC).
+post covers everything from low level profiling tools to extensive profiling suites.
 
-In this introductory blog, we briefly describe the following open source tools that can aid in application analysis:
+In this introductory blog, we briefly describe the following tools that can aid in application analysis:
 1. [ROC-profiler](#roc-profiler)
 2. [Omniperf](#omniperf)
 3. [Omnitrace](#omnitrace)
@@ -58,10 +56,10 @@ In this introductory blog, we briefly describe the following open source tools t
 The following terms are used in this blog post:
 | Term        | Description |
 | ----------- | ----------- |
-| ['Zen' Core](https://www.amd.com/en/technologies/zen-core)| AMD's revolutionary x86 processor Chiplet design that delivers ultimate performance, scalability and efficiency. Includes the AMD Ryzen&trade;, AMD EPYC&trade; and AMD Threadripper&trade; processor series.|
+| [AMD "Zen" Core](https://www.amd.com/en/technologies/zen-core)| AMD's x86-64 processor core architecture design. Used by the AMD EPYC&trade;, AMD Ryzen&trade;, AMD Ryzen&trade; PRO, and AMD Threadripper&trade; PRO processor series.|
 | [RDNA&trade;](https://www.amd.com/en/technologies/rdna) | AMD's Traditional GPU architecture optimized for graphically demanding workloads like gaming and visualization. Includes the RX 5000, 6000 and 7000 GPUs. |
 | [CDNA&trade;](https://www.amd.com/en/technologies/cdna) | AMD's Compute dedicated GPU architecture optimized for accelerating HPC, ML/AI, and data center type workloads. Includes the AMD Instinct™ MI50/60, MI100, and MI200 series accelerators.|
-| [GCN](https://www.amd.com/en/technologies/gcn)   | AMD's pre-CDNA™/RDNA™ GPU architecture |
+| [GCN](https://www.amd.com/en/technologies/gcn)   | AMD's pre-CDNA&trade;/RDNA&trade; GPU architecture |
 | [HIP](https://docs.amd.com/bundle/HIP-Programming-Guide-v5.3/page/Introduction_to_HIP_Programming_Guide.html) | A C++ Runtime API and kernel language that allows developers to create portable compute kernels/applications for AMD and NVIDIA GPUs from a single source code |
 | Timeline Trace | A profiling approach where durations of compute kernels and data transfers between devices are collected and visualized |
 | [Roofline Analysis](https://enccs.github.io/AMD-ROCm-development/hierarchical_roofline/) | Hardware agnostic methodology for quantifying a workload's ability to saturate the given compute architecture in terms of floating-point compute and memory bandwidth |
@@ -75,8 +73,8 @@ appear daunting for new users of AMD hardware.
 We begin by identifying the architecture and operating systems supported by each of the profiling tools
 provided by AMD. Almost all the tools in Table 1 support Linux&reg; distros and with the gaining popularity of
 Instinct&trade; GPUs, every tool has some capability to profile codes running on CDNA&trade; architecture. However,
-those who prefer Windows will be limited to using [AMD <greek>u</greek>Prof](#amd-uprof) (MICRO-prof) to profile CPU and GPU
-codes targeting 'Zen' core processors and AMD Instinct&trade; GPUs, and
+those who prefer Windows will be limited to using [AMD <greek>u</greek>Prof](#amd-uprof)
+to profile CPU and GPU codes targeting AMD "Zen"-based processors and AMD Instinct&trade; GPUs, and
 [Radeon&trade; GPU Profiler](#radeon-gpu-profiler) that can provide great insights to optimize applications'
 use of the graphics pipeline (rasterization, shaders, etc.) on RDNA&trade;-based GPUs.
 
@@ -84,13 +82,13 @@ use of the graphics pipeline (rasterization, shaders, etc.) on RDNA&trade;-based
 ================
  ### Table 1
 ================ -->
-| AMD Profiling Tools | AMD 'Zen' Core | RDNA&trade; | CDNA&trade; | Windows | Linux&reg; |
+| AMD Profiling Tools | AMD "Zen" Core | RDNA&trade; | CDNA&trade; | Windows | Linux&reg; |
 | :------------------ | :------------: | :---------: | :---------: | :-----: | :---: | 
 | ROC-profiler               |<sub><sup>Not supported</sup></sub>|    &star;                         |    &starf;  |<sub><sup>Not supported</sup></sub>|&starf;|
 | Omniperf                   |<sub><sup>Not supported</sup></sub>|<sub><sup>Not supported</sup></sub>|    &starf;  |<sub><sup>Not supported</sup></sub>|&starf;|
 | Omnitrace                  |     &starf;                       |    &star;                         |    &starf;  |<sub><sup>Not supported</sup></sub>|&starf;|
 | Radeon&trade; GPU Profiler |<sub><sup>Not supported</sup></sub>|    &starf;                        |    &star;   |   &starf;                         |&star; |
-| <greek>u<greek>Prof        |     &starf;                       |<sub><sup>Not supported</sup></sub>|    &star;   |   &starf;                         |&star; |
+| AMD <greek>u<greek>Prof    |     &starf;                       |<sub><sup>Not supported</sup></sub>|    &star;   |   &starf;                         |&star; |
 
 &starf; Full support | &star; Partial support
 
@@ -111,7 +109,7 @@ Profiler](#radeon-gpu-profiler) depending on the targeted architecture.
 well the hardware is being utilized. For example, identifying what parts of your application are memory or compute bound.
 This can be accomplished through roofline profiling. Typically, hotspots are well understood and
 interest is usually in identifying the performance of a few key kernels or subroutines. At present, roofline profiling is
-only available through [Omniperf](#omniperf) on AMD Instinct&trade; GPUs and [AMD <greek>u</greek>Prof](#amd-uprof) on 'Zen' processors.
+only available through [Omniperf](#omniperf) on AMD Instinct&trade; GPUs and [AMD <greek>u</greek>Prof](#amd-uprof) on AMD "Zen"-based processors.
 3. _Why am I seeing this performance_?: Once hotspots are identified and the initial assessment of performance
 on a particular hardware is completed, the next phase likely involves profiling and collecting the hardware metrics to 
 understand where the observed performance is coming from. On AMD GPUs, tools such as [Omnitrace](#omnitrace), [Omniperf](#omniperf)
@@ -121,7 +119,7 @@ dealing with text/CSV files and hardware-specific metrics unless there is a spec
 on using either [AMD <greek>u</greek>Prof](#amd-uprof) or [Radeon&trade; GPU Profiler](#radeon-gpu-profiler).
 
 > **Quick Tip**:  The relatively new Omni\* suite of tools ([Omniperf](#omniperf) and [Omnitrace](#omnitrace)), available 
-on Linux&reg; platforms, provide an easy-to-use interface for studying performance of the code across AMD hardware and 
+on Linux&reg; platforms, provide an easy-to-use interface for studying performance of the code across AMD hardware and
 should be treated as "go-to" profiling tools for performance tuning and benchmarking.
 
 <!-- 
@@ -255,23 +253,21 @@ using [Omniperf](#omniperf), [Omnitrace](#omnitrace) or [ROC-profiler](#roc-prof
 
 ### AMD uProf
 
-[AMD <greek>u</greek>Prof](https://www.amd.com/en/developer/uprof.html) (MICRO-prof) is a software profiling analysis tool for x86
+[AMD <greek>u</greek>Prof](https://www.amd.com/en/developer/uprof.html) (AMD MICRO-prof) is a software profiling analysis tool for x86
 applications running on Windows, Linux&reg; and FreeBSD operating systems and provides event information unique to 
-the AMD 'Zen' processors. AMD <greek>u<greek>Prof enables the developer to better understand the limiters of application performance 
-and evaluate improvements.
+the AMD "Zen"-based processors and AMD Instinct&trade; MI Series accelerators. AMD <greek>u<greek>Prof enables the developer to better
+understand the limiters of application performance and evaluate improvements.
 
 AMD <greek>u</greek>Prof offers:
 
 * Performance Analysis to identify runtime performance bottlenecks of the application
 * System Analysis to monitor system performance metrics
+* Roofline analysis
 * Power Profiling to monitor thermal and power characteristics of the system
 * Energy Analysis to identify energy hotspots in the application (Windows only)
 * Remote Profiling to connect to remote Linux&reg; systems (from a Windows host system), trigger 
 collection/translation of data on the remote system and report it in local GUI
-
-> **Note** 
-> <greek>u</greek>Prof does have initial support for AMD CDNA&trade; GPUs, however, we recommend using [Omniperf](#omniperf), 
-[Omnitrace](#omnitrace), or [ROC-profiler](#roc-profiler) for profiling HIP workloads.
+* Initial support for AMD CDNA&trade; accelerators is provided in AMD uProf 3.6 for AMD Instinct&trade; MI100 and MI200 Series devices and new features are under development
 
 ### Other third-party tools
 
