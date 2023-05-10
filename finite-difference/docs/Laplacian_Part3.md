@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Finite Difference Method - Laplacian Part 3
+# Finite Difference Method - Laplacian part 3
 
 In the previous two Laplacian posts, we developed a HIP implementation of a finite-difference code designed around a Laplace operator
 and applied two possible code optimizations to optimize memory movement between the L2 cache and global memory. 
