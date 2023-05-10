@@ -2,6 +2,7 @@ root: README
 entries:
 - file: finite-difference/docs/Laplacian_Part1
 - file: finite-difference/docs/Laplacian_Part2
+- file: finite-difference/docs/Laplacian_Part3
 - file: matrix-cores/README
 - file: profilers/README
 - file: rocm-installation/README
