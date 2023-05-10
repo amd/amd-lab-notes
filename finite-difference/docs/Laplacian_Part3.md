@@ -29,17 +29,17 @@ that the Laplacian takes the form of a divergence of a gradient of a scalar fiel
 
 $$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial y^2},$$
 
-The performance of the baseline HIP implementation we started off with in [Part 1](./Laplacian_Part1.md#HIP-implementation) achieved around 50%[^1] of the theoretical peak. However, based on initial `rocprof` analyses, 
+The performance of the baseline HIP implementation we started off with in [Part 1](./Laplacian_Part1.md#hip-implementation) achieved around 50%[^1] of the theoretical peak. However, based on initial `rocprof` analyses, 
 we projected that the finite difference kernel should reach up to 71%[^1] of the peak. To meet this goal, we applied two optimizations:
 
 1. Introduced loop tiling to explicitly reuse loaded stencils
 2. Reordered the read access pattern of the stencil points
 
-Please see the reordering read access patterns section in [Part 2](./Laplacian_Part2.md#Reorder-read-access-patterns) for the full code implementation.
+Please see the reordering read access patterns section in [Part 2](./Laplacian_Part2.md#reorder-read-access-patterns) for the full code implementation.
 With these changes, we have reached 95% of the performance projection, but we still have some open questions:
 - The previous optimizations required manual tuning of certain parameters that could lead to strange performance 
 characteristics where performance suddenly drops from a large tiling factor. Could fixing the root cause of this performance drop get us closer to the target figure of merit (FOM) 
-as defined in [Part 1](./Laplacian_Part1.md#Performance)?
+as defined in [Part 1](./Laplacian_Part1.md#performance)?
 - We have focused solely on optimizing the kernel's cache and data reuse of the fetch operations. Could we make some gains by improving the same aspects of the write operations?
 - The optimizations we have introduced required non-trivial code changes. Are there alternative optimizations we could leverage 
 to gain significant performance without the increase in code complexity?
