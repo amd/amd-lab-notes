@@ -27,7 +27,7 @@ SOFTWARE.
 // Tiling factor
 #define m 8
 template <typename T>
-__global__ void laplacian_kernel(T *__restrict__ f, const T *__restrict__ u, int nx, int ny, int nz, T invhx2, T invhy2, T invhz2, T invhxyz2) {
+__global__ void laplacian_kernel(T * f, const T * u, int nx, int ny, int nz, T invhx2, T invhy2, T invhz2, T invhxyz2) {
     
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = m*(threadIdx.y + blockIdx.y * blockDim.y);
