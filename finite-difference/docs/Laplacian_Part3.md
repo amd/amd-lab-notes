@@ -243,7 +243,7 @@ void __builtin_nontemporal_store(T value, T *addr);
 In the Laplacian examples, we only need the nontemporal stores. Let us first apply this builtin to the initial
 baseline kernel:
 
-<table>
+<table class="scrollable-table">
 <tr>
 <th>
 Kernel 1 (Before)
