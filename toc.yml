@@ -7,3 +7,4 @@ entries:
 - file: profilers/README
 - file: rocm-installation/README
 - file: mi200-memory-space/Overview
+- file: register-pressure/README

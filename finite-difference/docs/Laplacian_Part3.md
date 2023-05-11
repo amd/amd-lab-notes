@@ -109,7 +109,7 @@ containing this information. Here is some sample output for the baseline HIP ker
 In addition to the ISA dump, there is a lot of information to unpack here. 
 We defer all interested readers to
 [this presentation](https://www.olcf.ornl.gov/wp-content/uploads/Intro_Register_pressure_ORNL_20220812_2083.pdf)
-as well as the upcoming [Register pressure]() post for more details 
+as well as the [register pressure](../../register-pressure/README.md) post for more details 
 on registers, scratch, occupancy, and more.
 
 The table below contains the above four key metrics for the baseline and optimized
