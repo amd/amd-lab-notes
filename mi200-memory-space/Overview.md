@@ -96,7 +96,7 @@ Pinned host memory can be allocated with one of two types of coherence support:
 
 Pinned memory allocations are coherent memory by default (`hipHostMallocDefault`).
 Within HIP there are additional pinned memory flags (e.g. `hipHostMallocMapped` and `hipHostMallocPortable`), however for MI200 these options (on or off) do not impact performance, so we will ignore them.
-The [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/develop/docs/markdown/hip_programming_guide.md) has more information on pinned memory allocation flags.
+The [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/main/docs/markdown/hip_programming_guide.md) has more information on pinned memory allocation flags.
 Allocating coherent and non-coherent memory is controlled using the above flags with the `hipHostMalloc` call:
 ```c++
 template<typename T>
@@ -351,7 +351,7 @@ If you have any questions or comments, please reach out to us on GitHub [Discuss
 
 ## Additional resources
 
-- [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/develop/docs/markdown/hip_programming_guide.md)
+- [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/main/docs/markdown/hip_programming_guide.md)
 - [ENCCS AMD Node Memory Model](https://enccs.github.io/AMD-ROCm-development/memory_model/)
 - [Crusher Quick Start Guide](https://docs.olcf.ornl.gov/systems/crusher_quick_start_guide.html)
 - [Heterogeneous Memory Management (HMM)](https://www.kernel.org/doc/html/v5.0/vm/hmm.html)
