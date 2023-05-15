@@ -1,11 +1,11 @@
-# Register pressure in AMD CDNA2™ GPUs #
+# Register pressure in AMD CDNA™2 GPUs #
 
-The register pressure of GPU kernels has a tremendous impact on the overall performance of your HPC application. 
-Understanding and controlling the register usage allows developers to carefully design codes capable of maximizing hardware resources.
-The following blog post is focused on a practical demo showing how to apply the recommendations explained in the following 
+Register pressure in GPU kernels has a tremendous impact on the overall performance of your HPC application. 
+Understanding and controlling register usage allows developers to carefully design codes capable of maximizing hardware resources.
+The following blog post is focused on a practical demo showing how to apply the recommendations explained in this 
 [OLCF training talk](https://vimeo.com/742349001) presented on August 23rd 2022. Here is the 
 [training archive](https://docs.olcf.ornl.gov/training/training_archive.html) where you can also find the slides.
-We focus soley on the AMD CDNA2™ architecture (MI200 series cards) using ROCm 5.4.
+We focus solely on the AMD CDNA™2 architecture (MI200 series GPUs) using ROCm 5.4.
 
 ## Registers and occupancy ##
 
@@ -15,30 +15,30 @@ Unfortunately, registers are a scarce and expensive resource and compilers try t
 When we use the word *optimize* we should always clarify the objective of the optimization process. 
 In fact, regular CPUs and accelerators, such as GPUs, because of their very nature, have different ways of executing programs and achieving high performance.
 One one hand, traditional CPUs are latency-oriented and are designed to execute as many instructions from a single serial 
-thread as possible. On the other hand, GPUs are throughput-oriented and designed to take advantage
+thread as possible. On the other hand, GPUs are throughput-oriented and are designed to take advantage
 of parallelism between independent threads as much as possible.
 
 In AMD GPUs, a high number of concurrent wavefronts running on the same Compute Unit (CU) enables the GPU to hide the time spent in accessing global memory, which is higher than the time needed to perform a compute operation, with operations performed by other wavefronts.
 
 The term *occupancy* represents the maximum number of wavefronts that can potentially run on the same CU at the same time. In general, having higher occupancy helps achieve better performance by hiding costly memory accesses with other operations, but this is not always the case.
 
-In Figure 1 we show a schematic representation of a CU in the CDNA2 architecture. The Vector General Purpose Registers (VGPRs) are used to store data that is not uniform across the wavefront, that is, data that is different for each work item in the wavefront.
+In Figure 1 we show a schematic representation of a CU in the CDNA™2 architecture. The Vector General Purpose Registers (VGPRs) are used to store data that is not uniform across the wavefront, that is, data that is different for each work item in the wavefront.
 They are the most general purpose registers available in the CU and they are directly manipulated by the Vector ALU (VALU). The VALU is responsible for executing most of the work in the CU, including floating-point operations (FLOPs), loads from memory, integer and logical operations, among others.
 
-The Scalar General Purpose Registers (SGPRs) represent a set of registers used to store data that is known to be uniform across the wavefront at compile-time. SGPRs are manipulated by the Scalar ALU (SALU) and they can only be used for a limited set of operations, like integer and logical.
+The Scalar General Purpose Registers (SGPRs) represent a set of registers used to store data that is known to be uniform across the wavefront at compile-time. SGPRs are manipulated by the Scalar ALU (SALU), and the SALU, unlike the VALU, can only be used for a limited set of operations, like integer and logical.
 
 The Local Data Share (LDS) is a fast on-CU software managed memory that can be used to efficiently share data between all work items in a block.
 
 <img src="img/gcn_compute_unit.png" width="600px"  class="img-center">
 <p style="text-align:center">
-Figure 1: Schematic representation of a CU in the CDNA2 architecture
+Figure 1: Schematic representation of a CU in the CDNA™2 architecture
 </p>
 
 Ideally, we would like to have as much occupancy as possible, all the time. In reality, occupancy is limited by hardware design choices and resource limitations dictated by the kernel (HIP, OpenCL, etc.) running on the card.
-For example, each CU of the AMD CDNA2 cards has four sets of wavefront buffers, one wavefront buffer per Execution Unit (EU, also called SIMD Unit in Figure 1), with four EUs per CU. Each EU can manage at the most **eight** wavefronts. This means that the physical limit to occupancy in CDNA2 is 32 wavefronts per CU.
+For example, each CU of the AMD CDNA™2 based GPUs has four sets of wavefront buffers, one wavefront buffer per Execution Unit (EU, also called SIMD Unit in Figure 1), with four EUs per CU. Each EU can manage at the most **eight** wavefronts. This means that the physical limit to occupancy in CDNA™2 is 32 wavefronts per CU.
 
 The number of registers needed by a kernel is one of the most common occupancy limiters. Another common limiter is LDS.
-The following table summarizes the maximum level of occupancy achievable on CDNA2 cards as a function of the number of VGPRs used by a kernel.
+The following table summarizes the maximum level of occupancy achievable on CDNA™2 based GPUs as a function of the number of VGPRs used by a kernel.
 
 <img src="img/occupancy_vgpr.JPG" width="600px"  class="img-center">
 <p style="text-align:center">
@@ -69,8 +69,8 @@ in order to reduce register pressure and increase performance.
 In this section, we will go through the steps of how to recognize a register pressure problem and how to mitigate it.
 
 First of all, the number of registers used by GPU kernels can be detected in two ways: 1) compiling the file containing the kernels with the `-Rpass-analyze=kernel-resource-usage` flag, which will print to screen the resource usage of each kernel in the file at compile time;
-some of the information include SGPRs, VGPRs, ScratchSize, VGPR/SGPR spills, Occupancy, and LDS usage. 2) Compiling with `--save-temps` and looking in the *hip-amdgcn-amd-amdhsa-gfx90a.s file for ".vgpr_spill_count". All the information reported by the `-Rpass-analyze=kernel-resource-usage` flag
-are also in here.
+some of this information include SGPRs, VGPRs, ScratchSize, VGPR/SGPR spills, Occupancy, and LDS usage. 2) Compiling with `--save-temps` and looking in the `hip-amdgcn-amd-amdhsa-gfx90a.s` file for `.vgpr_spill_count`. All the information reported by the `-Rpass-analyze=kernel-resource-usage` flag
+are also in this file.
 
 Once the register pressure situation has been assessed/confirmed, there are a few techniques that can be applied to the code to reduce register pressure.
 
@@ -79,15 +79,15 @@ Once the register pressure situation has been assessed/confirmed, there are a fe
 2. **Move variable definition/assignment close to where they are used**. Defining one or multiple variables at the top of a GPU kernel and using them at the very bottom forces the compiler those variables stored in register or scratch until they are used, thus impacting
 the possibility of using those registers for more performance critical variables. Moving the definition/assignment close to their first use will help the heuristic techniques make more efficient choices for the rest of the code.
 
-3. **Avoid allocating data on the stack**. Memory allocated on the stack, e.g., double array[10], lives in scratch memory by default and it may be stored into registers by the compiler as an optimization step.
+3. **Avoid allocating data on the stack**. Memory allocated on the stack, e.g., `double array[10]`, lives in scratch memory by default and it may be stored into registers by the compiler as an optimization step.
 If your application makes use of memory allocated on the stack, seeing scratch memory usage should not be a big surprise.
 
-4. **Avoid passing big objects as kernel arguments**. Function arguments are allocated on the stack and may be saved into registers as an optimization. Sometimes, storing these arguments as *constant* may help.
+4. **Avoid passing big objects as kernel arguments**. Function arguments are allocated on the stack and may be saved into registers as an optimization. Sometimes, storing these arguments as `constant` may help.
 
 5. **Avoid writing large kernels with many function calls (including math functions and assertions)**. Currently, the compiler always inlines device functions, including math functions and assertions. Having many of these function calls introduces extra code and potentially higher register pressure.
-As an example, replacing _pow(var,2.0)_ with a simple _var*var_ can significantly reduce register pressure.
+As an example, replacing `pow(var,2.0)` with a simple `var*var` can significantly reduce register pressure.
 
-6. **Keep loop unrolling under control**. Loop unrolling can be obtained by adding a _#pragma unroll_ command on a loop where the number of iterations is known at compile time. By doing so, all the iterations are completely unrolled, thus reducing the cost of checking the exit condition of the loop.
+6. **Keep loop unrolling under control**. Loop unrolling can be obtained by adding a `#pragma unroll` command on a loop where the number of iterations is known at compile time. By doing so, all the iterations are completely unrolled, thus reducing the cost of checking the exit condition of the loop.
 However, unrolling increases register pressure because more variables need to be stored in registers at the same time. In cases where register pressure is a concern, the use of loop unrolling should be limited. Note that the Clang compiler tends to be much more literal in unrolling loops than other compilers.
 
 7. **Manually spill to LDS**. As a last resort, it can be beneficial to use some LDS memory to manually store variables, possibly the ones with the longest liveness, and save a few registers per thread.
@@ -97,7 +97,7 @@ However, unrolling increases register pressure because more variables need to be
 For the rest of our discussion, we will focus on the following code:
 
 
-```C++
+```c++
 __global__ void kernel (double *phi, double *laplacian_phi,
 			double *grad_phi_x, double *grad_phi_y, double *grad_phi_z,
 			double *f0, double *f1, double *f2, double *f3, double *f4,
@@ -265,9 +265,9 @@ By looking at the occupancy table in Table 1 shown earlier, we see that we would
 
 ### Optimization n.1: remove unnecessary math function invocations ###
 
-Looking at the following code, we notice the use of the _pow_ function needed to square the variable __current_phi__.
+Looking at the following code, we notice the use of the `pow` function needed to square the variable `current_phi`.
 
-```C++
+```c++
  if(i <= nx && j <= ny && z <= nz)
     {
       m = i + ldx * (j + ldy * z);
@@ -278,9 +278,9 @@ Looking at the following code, we notice the use of the _pow_ function needed to
 ```
 
 As we mentioned before, the compiler will currently inline all the invocations to device functions, including math functions.
-A possible optimization is to replace the general purpose function _pow_ with a specific code for squaring the variable as follows:
+A possible optimization is to replace the general purpose function `pow` with a specific code for squaring the variable as follows:
 
-```C++
+```c++
  if(i <= nx && j <= ny && z <= nz)
     {
       m = i + ldx * (j + ldy * z);
@@ -315,10 +315,10 @@ Although the reduction may not seem significant, this will allow for more room f
 Once a variable is defined, its value is stored in a register for future use. Defining variables at the beginning of the kernel and using them at the end will dramatically increase register usage.
 A second optimization that may provide significant benefit is to look for cases where variables are defined "far away" from their first use and manually rearrange the code.
 
-After a quick visual inspections we can see that the definition of array location  _f[m]_ does not depend on _ux_, _uy_, or _uz_ as opposed to
-the other arrays _f1_ to _f6_.
+After a quick visual inspections we can see that the definition of array location  `f[m]` does not depend on `ux`, `uy`, or `uz` as opposed to
+the other arrays `f1` to `f6`.
 
-```C++
+```c++
       mu_phi = alpha * current_phi * ( current_phi_2 - phi2 ) - k * laplacian_phi[m];
       
       fx = mu_phi * grad_phi_x[m];
@@ -348,9 +348,9 @@ the other arrays _f1_ to _f6_.
       f6[current_pos] = itauphi1 * f6[current_pos] + af - cf * uz;
 ```
 
-After moving the definition of _f[m]_ right before the definition of _ux_ 
+After moving the definition of `f[m]` right before the definition of `ux` 
 
-```C++
+```c++
       mu_phi = alpha * current_phi * ( current_phi_2 - phi2 ) - k * laplacian_phi[m];
       
       f0[m] = itauphi1 * f0[m] + -3.0 * gamma * mu_phi * itauphi + itauphi * current_phi;
@@ -402,13 +402,13 @@ lbm_rearrage_2.cpp:16:1: remark:     LDS Size [bytes/block]: 0 [-Rpass-analysis=
 In the C-type languages like C++, aliasing is one of the main limitations to achieve high performance. To avoid this problem, the standard C99 introduced "restricted pointers": a way for the user to tell the compiler that different object pointer types and function parameter
 arrays do not point to overlapping memory regions. This allows the compiler to perform aggressive optimizations that may be otherwise prevented because of aliasing.
 The use of restricted pointers *may* increase register pressure because the compiler will try to reuse more data by storing it in registers.
-On AMD hardware, this is not always the case and sometimes using the *restrict* is beneficial to reduce both SGPRs and VGPRs pressure.
-As a rule of thumb, the use of *restrict* on function arguments will tend to reduce SGPRs usage with a chance of increasing VGPRs usage.
+On AMD hardware, this is not always the case and sometimes using `restrict` is beneficial to reduce both SGPRs and VGPRs pressure.
+As a rule of thumb, the use of `restrict` on function arguments will tend to reduce SGPRs usage with a chance of increasing VGPRs usage.
 
-As an example, let us add the *restrict* keyword to the *g14* array because it gets reused several times in the rest of the code and we may achieve higher performance from the reuse.
+As an example, let us add the `restrict` keyword to the `g14` array because it gets reused several times in the rest of the code and we may achieve higher performance from the reuse.
 
 
-```C++
+```c++
 __global__ void kernel (double *  phi, double *  laplacian_phi,
 						  double *  grad_phi_x, double * grad_phi_y, double *  grad_phi_z,
 						  double *  f0, double *  f1, double *  f2, double *  f3, double *  f4,
@@ -441,7 +441,7 @@ lbm_2_restrict.cpp:16:1: remark:     VGPRs Spill: 0 [-Rpass-analysis=kernel-reso
 lbm_2_restrict.cpp:16:1: remark:     LDS Size [bytes/block]: 0 [-Rpass-analysis=kernel-resource-usage]
 ```
 
-By adding *restrict* to the variable *g7* we observe a further reduction in SGPRs usage and slight increase in VGPRs that still keeps occupancy at 5 waves/SIMD
+By adding `restrict` to the variable `g7` we observe a further reduction in SGPRs usage and slight increase in VGPRs that still keeps occupancy at 5 waves/SIMD
 
 ```
 lbm_2_restrict.cpp:16:1: remark: Function Name: _Z6kernelPdS_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_iiiiiiiddddddddddddddd [-Rpass-analysis=kernel-resource-usage]
@@ -459,8 +459,8 @@ lbm_2_restrict.cpp:16:1: remark:     LDS Size [bytes/block]: 0 [-Rpass-analysis=
 
 ## Conclusion ##
 
-In this post, we describe at high level the nature and consequences of register pressure for HPC applications and algorithms related to the CDNA2 architecture. We also provide a set of rules that have been found effective in reducing register pressure and increasing occupancy.
-It is important to highlight that the results shown in this blog post can be entirely replicated only on CDNA2 cards when ROCm 5.4 is used. The ever changing nature of the compiler and its heuristics may alter the outcome of the code examples shown in this post when a ROCm version different from 5.4 is used.
+In this post, we described, at a high level, the nature and consequences of register pressure for HPC applications and algorithms running on AMD's CDNA™2 architecture. We also provided a set of rules that have been found effective in reducing register pressure and increasing occupancy.
+It is important to highlight that the results shown in this blog post can be entirely replicated only on CDNA™2 based GPUs when ROCm 5.4 is used. The ever changing nature of the compiler and its heuristics may alter the outcome of the code examples shown in this post when a ROCm version different from 5.4 is used.
 We encourage readers to experiment with the code examples and evaluate performance with each change against different ROCm versions.
 
 [Accompanying code examples](https://github.com/amd/amd-lab-notes/tree/release/register-pressure/codes)
