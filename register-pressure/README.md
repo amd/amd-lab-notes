@@ -14,7 +14,7 @@ Unfortunately, registers are a scarce and expensive resource and compilers try t
 
 When we use the word *optimize* we should always clarify the objective of the optimization process. 
 In fact, regular CPUs and accelerators, such as GPUs, because of their very nature, have different ways of executing programs and achieving high performance.
-One one hand, traditional CPUs are latency-oriented and are designed to execute as many instructions from a single serial 
+On one hand, traditional CPUs are latency-oriented and are designed to execute as many instructions from a single serial 
 thread as possible. On the other hand, GPUs are throughput-oriented and are designed to take advantage
 of parallelism between independent threads as much as possible.
 
