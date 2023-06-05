@@ -21,11 +21,11 @@ SOFTWARE.
 --->
 # AMD ROCm™ installation
 
-AMD ROCm™ is the first open-source software development platform for HPC/Hyperscale-class GPU computing. AMD ROCm™ brings the UNIX philosophy of choice, minimalism and modular software development to GPU computing. Please see the AMD [Open Software Platform for GPU](https://www.amd.com/en/graphics/servers-solutions-rocm) and [ROCm Informational Portal](https://docs.amd.com/) pages for more information. 
+AMD ROCm™ is the first open-source software development platform for HPC/Hyperscale-class GPU computing. AMD ROCm™ brings the UNIX philosophy of choice, minimalism and modular software development to GPU computing. Please see the AMD [Open Software Platform for GPU Compute](https://www.amd.com/en/graphics/servers-solutions-rocm) and [ROCm Informational Portal](https://rocm.docs.amd.com/) pages for more information. 
 
 Installation of the AMD ROCm™ software package can be challenging without a clear understanding of the pieces involved and the flow of the installation process. This introductory material shows how to install ROCm on a workstation with an AMD GPU card that supports the AMD GFX9 architecture. A follow on blog will discuss installing ROCm in other environments, such as a Docker Container, Linux LXC or a full HPC installation. 
 
-The website [https://docs.amd.com](https://docs.amd.com) contains links to the Release, Support and API documentation for ROCm. Please refer to the [Installation Guide](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html) and [Hardware / Software Support Guide](https://docs.amd.com/bundle/Hardware_and_Software_Reference_Guide/page/Hardware_and_Software_Support.html) for the software and hardware supported by the V 5.4 release of ROCm. This post will be based on an Ubuntu 20.04 operating system and the AMD MI50 GPU card. The full installation process is documented at [How to Install](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install) page.
+The website [https://rocm.docs.amd.com](https://rocm.docs.amd.com) contains links to the Release, Support and API documentation for ROCm. Please refer to the [Installation Guide](https://rocm.docs.amd.com/en/latest/deploy/linux/) and [Hardware / Software Support Guide](https://rocm.docs.amd.com/en/latest/release/gpu_os_support.html) for the software and hardware supported by the V 5.4 release of ROCm. This post will be based on an Ubuntu 20.04 operating system and the AMD MI50 GPU card. The full installation process is documentated in the [Installation Guide](https://rocm.docs.amd.com/en/latest/deploy/linux/).
 
 AMD ROCm™ is a brand name for the ROCm open software platform supporting GPUs using AMD's CDNA, and RDNA GPU architectures. The platform includes drivers and runtimes for libraries and developer tools.
 
@@ -37,12 +37,12 @@ AMD ROCm™ is a brand name for the ROCm open software platform supporting GPUs 
 
 ## Option 1
 
-AMD provides an installation script for specific operating system and ROCm versions. The script name and download location can be different for each combination of O/S and ROCm so check the [How to Install page](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install) for your specific combination. We are using Ubuntu 20.04 and installing ROCm 5.4 and find that the script is named *amdgpu-install_5.4.50400-1_all*.
+AMD provides an installation script for specific operating system and ROCm versions. The script name and download location can be different for each combination of O/S and ROCm so check the [How to Install page](https://rocm.docs.amd.com/en/latest/deploy/linux/installer/install.html) for your specific combination. We are using Ubuntu 20.04 and installing ROCm 5.4.3 and find that the script is named *amdgpu-install_5.4.50403-1_all*.
 
 ```bash
 sudo apt-get update
-wget https://repo.radeon.com/amdgpu-install/5.4/ubuntu/focal/amdgpu-install_5.4.50400-1_all.deb
-sudo apt-get install ./amdgpu-install_5.4.50400-1_all.deb
+wget https://repo.radeon.com/amdgpu-install/5.4.3/ubuntu/focal/amdgpu-install_5.4.50403-1_all.deb
+sudo apt install ./amdgpu-install_5.4.50403-1_all.deb
 ```
 Once the amdgpu-install script has been extracted,  it can be used to install the kernel code, libraries and developer code. For a typical HPC environment HIP, ROCm and the kernel drivers should be sufficient:
 ```bash
@@ -67,7 +67,7 @@ To remove all old versions use:
 sudo amdgpu-uninstall --rocmrelease=all
 ```
 
-AMD provides an installation script for specific operating system and ROCm versions. The script name and download location can be different for each combination of O/S and ROCm so check the [How to Install page](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install) for your specific combination. We are using Ubuntu 20.04 and installing ROCm 5.4 and find that the script is named *amdgpu-install_5.4.50400-1_all*.
+AMD provides an installation script for specific operating system and ROCm versions. The script name and download location can be different for each combination of O/S and ROCm so check the [How to Install page](https://rocm.docs.amd.com/en/latest/deploy/linux/installer/install.html) for your specific combination. We are using Ubuntu 20.04 and installing ROCm 5.4 and find that the script is named *amdgpu-install_5.4.50400-1_all*.
 
 ```bash
 sudo apt-get update
@@ -75,7 +75,7 @@ wget https://repo.radeon.com/amdgpu-install/5.4/ubuntu/focal/amdgpu-install_5.4.
 sudo apt-get install ./amdgpu-install_5.4.50400-1_all.deb
 ```
 Once the amdgpu-install script has been extracted,  it can be used to install the kernel code, libraries and developer code.
-The steps below will install the kernel driver code at level 5.4.0 and the libraries at level 5.4.0, 5.3.2 and 5.2.3. For a typical HPC environment HIP and the ROCm libraries should be sufficient:
+The steps below will install the kernel driver code at level 5.4.0 and the libraries at level 5.4.0, 5.3.2 and 5.2.3. For a typical HPC environment, HIP and the ROCm libraries should be sufficient:
 ```bash
 sudo amdgpu-install --usecase=hiplibsdk,rocm,dkms --rocmrelease=5.4.0
 sudo amdgpu-install --usecase=hiplibsdk,rocm --rocmrelease=5.3.2 --no-dkms
@@ -94,7 +94,7 @@ and checking that the card was detected by the software. The supported GPU card 
 ## Option 3
 
 While AMD provides an installation script for specific operating system and ROCm versions, the script will ultimately install the software using the O/S standard installation software. In the case of Ubuntu, the script will use *apt-get* to  install ROCm.
-The full apt-get process is shown on the [How to Install page](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4/page/How_to_Install_ROCm.html#_How_to_Install). The steps below will install ROCm 5.4 with a custom version of the apt-get commands. 
+The full apt-get process is shown on the [How to Install page](https://rocm.docs.amd.com/en/latest/deploy/linux/os-native/install.html). The steps below will install ROCm 5.4 with a custom version of the apt-get commands. 
 
 Determine the location of the ROCm software to install and HIP and the related ROCm software:
 ```bash
