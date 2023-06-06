@@ -8,4 +8,4 @@ entries:
 - file: rocm-installation/README
 - file: mi200-memory-space/Overview
 - file: register-pressure/README
-- file: gpu-aware-mpi/gpu-aware-mpi
+- file: gpu-aware-mpi/README
