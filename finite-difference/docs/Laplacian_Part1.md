@@ -45,7 +45,9 @@ As an example of a physical phenomena that can be described by the Laplacian, th
 |<img src="diagrams/heat_eq_initial_condition.png" width="400px" height="300px" class="img-center">|<img src="diagrams/heat_eq.gif" width="400px" height="300px" class="img-center">|
 
 In Cartesian coordinates, the Laplacian takes the form of the divergence of a gradient of a scalar field $u(x,y,z)$:
-$$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial y^2},$$
+
+$$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial z^2},$$
+
 where $u$ is a suitably smooth function of the spatial coordinates $x$, $y$, and $z$.
 
 ## Discretization and host implementation

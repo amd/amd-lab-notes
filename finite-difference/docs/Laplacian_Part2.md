@@ -40,7 +40,7 @@ optimizations that can be applied to the kernel to help achieve this:
 In the previous post, we considered a HIP implementation of the central finite difference stencil for the Laplacian.
 Recall that the Laplacian takes the form of a divergence of a gradient of a scalar field $u(x,y,z)$:
 
-$$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial y^2},$$
+$$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial z^2},$$
 
 The initial HIP implementation is shown below
 
