@@ -352,7 +352,7 @@ If you have any questions or comments, please reach out to us on GitHub [Discuss
 ## Additional resources
 
 - [HIP Programming Guide](https://github.com/ROCm-Developer-Tools/HIP/blob/main/docs/markdown/hip_programming_guide.md)
-- [ENCCS AMD Node Memory Model](https://enccs.github.io/AMD-ROCm-development/memory_model/)
+- [ENCCS AMD Node Memory Model](https://enccs.github.io/amd-rocm-development/memory_model/)
 - [Crusher Quick Start Guide](https://docs.olcf.ornl.gov/systems/crusher_quick_start_guide.html)
 - [Heterogeneous Memory Management (HMM)](https://www.kernel.org/doc/html/v5.0/vm/hmm.html)
 
