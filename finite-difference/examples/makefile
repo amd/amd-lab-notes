@@ -25,7 +25,7 @@ FLAGS=-O3 -std=c++17
 #TEMPS=true
 #THEORY=true
 DOUBLE=true
-EXAMPLE=kernel1 kernel2 kernel3 kernel4 kernel5
+EXAMPLE=kernel1 kernel2 kernel3 kernel4 kernel5 kernel6 kernel7
 
 ifeq "$(DOUBLE)" "true"
 	PRECISION=-DDOUBLE
