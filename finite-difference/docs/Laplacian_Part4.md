@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --->
-# Finite Difference Method - Laplacian Part 4
+# Finite Difference Method - Laplacian part 4
 
 In the previous three posts, we presented a HIP implementation of the finite difference 
 method for the Laplace operator and applied four different optimizations.
