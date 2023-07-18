@@ -268,7 +268,7 @@ configure both the grid launch of the HIP kernel and the indexing within the ker
 This requires code modifications on both the host side and device side. For the host side, 
 we modify the grid launch configuration:
 
-<table>
+<table class="scrollable-table-no-label">
 <tr>
 <th>
 Kernel 5 (Before)
@@ -303,7 +303,7 @@ dim3 grid(
 
 The second change involves configuring the indexing inside the HIP kernel:
 
-<table>
+<table class="scrollable-table-no-label">
 <tr>
 <th>
 Kernel 5 (Before)
@@ -364,7 +364,7 @@ this problem into 4 sub domains.
 
 Let us start by going back to Kernel 5. First we modify the host side code:
 
-<table>
+<table class="scrollable-table">
 <tr>
 <th>
 Kernel 5 (Before)
@@ -416,7 +416,7 @@ to indicate that we're only iterating through one quarter of the domain in the y
 HIP kernels to compute the stencils across each of the four sub domains. Finally we modify the kernel arguments by adding a y-direction 
 offset. The device kernel needs to be modified as follows:
 
-<table>
+<table class="scrollable-table">
 <tr>
 <th>
 Kernel 5 (Before)
