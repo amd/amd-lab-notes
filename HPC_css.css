@@ -1,3 +1,9 @@
+table.scrollable-table-no-label {
+  overflow-x: auto;
+  position: relative;
+  display: block;
+}
+
 table.scrollable-table {
   overflow-x: scroll;
   position: relative;

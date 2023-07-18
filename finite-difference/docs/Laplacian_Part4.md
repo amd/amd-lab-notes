@@ -268,7 +268,7 @@ configure both the grid launch of the HIP kernel and the indexing within the ker
 This requires code modifications on both the host side and device side. For the host side, 
 we modify the grid launch configuration:
 
-<table>
+<table class="scrollable-table-no-label">
 <tr>
 <th>
 Kernel 5 (Before)
@@ -303,7 +303,7 @@ dim3 grid(
 
 The second change involves configuring the indexing inside the HIP kernel:
 
-<table>
+<table class="scrollable-table-no-label">
 <tr>
 <th>
 Kernel 5 (Before)
