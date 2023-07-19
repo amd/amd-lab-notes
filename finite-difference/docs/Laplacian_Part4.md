@@ -175,10 +175,10 @@ illustrates our findings across the same spectrum of problem sizes:
 Figure 2: Fetch efficiency and L2 cache hit rates of Kernel 5 on a single MI250X GCD across various problem sizes
 </p>
 
-There is a clear correlation between the FOM, fetch efficiency, and L2 cache hite rate. Recall from the
+There is a clear correlation between the FOM, fetch efficiency, and L2 cache hit rate. Recall from the
 Laplacian Part 1 post that the baseline HIP kernel exhibited a 50% fetch efficiency while maintaining a
 relatively high L2 cache hit rate of 65%. This led us to believe that there was a problem with the
-kernel design. In this last experiment, both the fetch effiency and L2 cache hit rate 
+kernel design. In this last experiment, both the fetch efficiency and L2 cache hit rate 
 leveled around 33%, suggesting that the limiting factor for performance is the size of the L2 cache.
 
 Another interesting observation from the above figure is that the dips in performance occur
