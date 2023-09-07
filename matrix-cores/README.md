@@ -144,10 +144,10 @@ An example kernel performing this MFMA operation is given below.
 #define N 16
 #define K 4
  
-using float4 = __attribute__( (__vector_size__(K * sizeof(float)) )) float;
  
 __global__ void sgemm_16x16x4(const float *A, const float *B, float *D)
 {
+  using float4 = __attribute__( (__vector_size__(K * sizeof(float)) )) float;
   float4 dmn = {0};
  
   int mk = threadIdx.y + K * threadIdx.x;
@@ -198,10 +198,10 @@ The kernel below shows an example of this multiplication for a packed batch of 4
 #define N 16
 #define K 1
  
-using float16 = __attribute__( (__vector_size__(16 * sizeof(float)) )) float;
  
 __global__ void sgemm_16x16x1(const float *A, const float *B, float *D)
 {
+  using float16 = __attribute__( (__vector_size__(16 * sizeof(float)) )) float;
   float16 dmnl = {0};
  
   int mkl = K * threadIdx.x + M * K * threadIdx.y;
