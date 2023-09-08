@@ -47,7 +47,7 @@ We recommend following the instructions on the [official ROCm TensorFlow website
 
 *Note*: We also strongly recommend using Docker image with [PyTorch](https://rocm.docs.amd.com/en/latest/how_to/pytorch_install/pytorch_install.html#option-1-recommended-use-docker-image-with-pytorch-pre-installed) or [TensorFlow](https://rocm.docs.amd.com/en/latest/how_to/tensorflow_install/tensorflow_install.html#option-1-install-tensorflow-using-docker-image) pre-installed. The reason is that if you create a virtual environment or conda environment, certain ROCm dependencies may not be properly installed. It can be non-trivial to install dependencies.  
 
-*Note*: You don’t need flag “--gpus all” to run docker on AMD GPUs.  
+*Note*: You don’t need flag `--gpus all` to run docker on AMD GPUs.  
 
 ## Git clone the source code you want to run
 
@@ -93,10 +93,10 @@ Note: the installation location may have the version number such as */opt/rocm-5
 
 We recommend following the below tutorials for this option.  
 
-- https://rocm.docs.amd.com/projects/HIPIFY/en/latest/
-- https://enccs.github.io/amd-rocm-development/porting_hip/
+- [https://rocm.docs.amd.com/projects/HIPIFY/en/latest/](https://rocm.docs.amd.com/projects/HIPIFY/en/latest/)
+- [https://enccs.github.io/amd-rocm-development/porting_hip/](https://enccs.github.io/amd-rocm-development/porting_hip/)
 - [Tutorial on Porting CUDA to HIP](https://www.youtube.com/watch?v=57FwfePRd-Y)  
-- https://www.admin-magazine.com/HPC/Articles/Porting-CUDA-to-HIP
+- [https://www.admin-magazine.com/HPC/Articles/Porting-CUDA-to-HIP](https://www.admin-magazine.com/HPC/Articles/Porting-CUDA-to-HIP)
   
 ## Commit changes to Docker Image
 
