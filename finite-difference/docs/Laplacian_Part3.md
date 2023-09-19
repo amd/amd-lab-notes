@@ -30,7 +30,7 @@ that the Laplacian takes the form of a divergence of a gradient of a scalar fiel
 $$\nabla \cdot \nabla u = \nabla^2 u = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial z^2},$$
 
 The performance of the baseline HIP implementation we started off with in [Part 1](./Laplacian_Part1.md#hip-implementation) achieved around 50%[^1] of the theoretical peak. However, based on initial `rocprof` analyses, 
-we projected that the finite difference kernel should reach up to 71%[^1] of the peak. To meet this goal, we applied two optimizations:
+we projected that the finite difference kernel should reach at least 71%[^1] of the peak. To meet this goal, we applied two optimizations:
 
 1. Introduced loop tiling to explicitly reuse loaded stencils
 2. Reordered the read access pattern of the stencil points

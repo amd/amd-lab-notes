@@ -350,10 +350,10 @@ The table below compares the above three `rocprof` metrics:
 
 The 65% `L2CacheHit` rate alone doesn't offer much insight. While the `WRITE_SIZE` metric matches its theoretical estimate, 
 the `FETCH_SIZE` is nearly doubled. This observation tells us that about 50 % of the stencil is reused. 
-If we can improve the stencil reuse to 100 %, the `FETCH_SIZE` would reduce by over 0.9 GB and in turn reduce the total memory traffic by 44 %. This reduction
+If we can improve the stencil reuse to 100 %, the `FETCH_SIZE` would reduce by over 0.9 GB and in turn reduce the total memory traffic by 31 %. This reduction
 could potentially translate into a 1.44x speedup of the kernel execution time, assuming HBM bandwidth
 saturation remains the same. Therefore, a 
-more realistic upper bound on effective memory bandwidth would be around ` 808.148 GB/s * 1.44 = 1165 GB/s`, which is about 71 %[^1] of the 
+more realistic target for effective memory bandwidth would be around ` 808.148 GB/s * 1.44 = 1165 GB/s`, which is about 71 %[^1] of the 
 peak theoretical HBM bandwidth of `1638.4 GB/s` per GCD. 
 
 There are several different approaches to optimizing finite difference kernels in general.

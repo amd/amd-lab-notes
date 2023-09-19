@@ -29,7 +29,7 @@ We established the figure of merit (FOM) as _effective memory bandwidth_ which d
 theoretical memory movement divided by the actual execution time. The FOM of our HIP implementation 
 currently achieves 50%[^1] of the peak of a single MI250X GCD, but our analysis suggests 
 that bringing the actual memory movement down to the theoretical amount may allow our 
-FOM to reach up to 71%[^1] of the peak. In this post we will introduce two common 
+FOM to reach at least 71%[^1] of the peak. In this post we will introduce two common 
 optimizations that can be applied to the kernel to help achieve this:
 
 1. Loop tiling to explicitly reduce memory loads
