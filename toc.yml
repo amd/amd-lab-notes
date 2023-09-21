@@ -11,3 +11,4 @@ entries:
 - file: register-pressure/README
 - file: gpu-aware-mpi/README
 - file: pytorch-tensorflow-env/README
+- file: jacobi/README
