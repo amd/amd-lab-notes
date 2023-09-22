@@ -32,28 +32,28 @@ Here, $u(x,y)$ is a smooth function in the domain.
 The equations are discretized using finite difference method[^1] in a Cartesian
 coordinates with a 5-point stencil:
 
-```math
+$$
 \frac{-u_{i-1,j  } + 2u_{i,j} - u_{i+1,j  }}{\Delta x^2} + 
 \frac{-u_{i,  j-1} + 2u_{i,j} - u_{i,  j+1}}{\Delta y^2} = f_{i,j}
-```
+$$
 
 [^1]: See the [Finite Difference](../finite-difference/docs/Laplacian_Part1.md) blogpost.
 
 The above finite difference Laplacian operator leads to a sparse matrix
 operator, $A$ on the vector of unknown $\bf u$: $A {\bf u} = f$. Here:
 
-```math
+$$
 {\bf u} = [u_{1,1}, u_{1,2}, \cdots, u_{2,1}, \cdots,
    u_{i,j}, \cdots u_{n_i,n_j}].
-```
+$$
 
 If the matrix is decomposed into the diagonal ($D$), lower ($L$) and upper ($U$)
 parts ($A = [D + L + U]$), the Jacobi iterative method can be represented as:
 
-```math
+$$
 {\bf u}^{k+1} = {\bf u}^{k} + D^{-1} \left( {\bf f} - A {\bf u}^k \right)
+$$
 
-```
 Here, $k$ refers to the iteration number. The values of ${\bf u}^{(k=0)}$ are the Initial Conditions.
 
 ## Jacobi Code structure
