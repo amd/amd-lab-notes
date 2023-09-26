@@ -7,11 +7,11 @@ high performance computing (HPC) applications. Discretization of a PDE by a
 numerical method, e.g. finite difference, finite volume, finite element, or any
 other methods, leads to a large sparse systems of equations. A stationary
 iterative method, such as the Jacobi, can take advantage of modern heterogeneous
-heirarchical systems with CPU and GPUs as it is more amenable to parallelization
+hierarchical systems with CPU and GPUs as it is more amenable to parallelization
 and require less memory compared to traditional direct methods. Jacobi
 iteration involves a lot of repeated matrix-vector product operations, and to a
 great extent limits communication between all components at every iteration.
-This makes Jacobi methods more favoriable for GPU offloading.
+This makes Jacobi methods more favorable for GPU offloading.
 
 In this blog, we explore GPU offloading using HIP and OpenMP target directives
 and discuss their relative merits in terms of implementation efforts and 
