@@ -12,3 +12,4 @@ entries:
 - file: gpu-aware-mpi/README
 - file: pytorch-tensorflow-env/README
 - file: jacobi/README
+- file: spmv/docs/SpMV_Part1
