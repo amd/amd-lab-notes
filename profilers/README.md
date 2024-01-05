@@ -59,10 +59,9 @@ The following terms are used in this blog post:
 | [AMD "Zen" Core](https://www.amd.com/en/technologies/zen-core)| AMD's x86-64 processor core architecture design. Used by the AMD EPYC&trade;, AMD Ryzen&trade;, AMD Ryzen&trade; PRO, and AMD Threadripper&trade; PRO processor series.|
 | [RDNA&trade;](https://www.amd.com/en/technologies/rdna) | AMD's Traditional GPU architecture optimized for graphically demanding workloads like gaming and visualization. Includes the RX 5000, 6000 and 7000 GPUs. |
 | [CDNA&trade;](https://www.amd.com/en/technologies/cdna) | AMD's Compute dedicated GPU architecture optimized for accelerating HPC, ML/AI, and data center type workloads. Includes the AMD Instinct™ MI50/60, MI100, and MI200 series accelerators.|
-| [GCN](https://www.amd.com/en/technologies/gcn)   | AMD's pre-CDNA&trade;/RDNA&trade; GPU architecture |
-| [HIP](https://docs.amd.com/bundle/HIP-Programming-Guide-v5.3/page/Introduction_to_HIP_Programming_Guide.html) | A C++ Runtime API and kernel language that allows developers to create portable compute kernels/applications for AMD and NVIDIA GPUs from a single source code |
-| Timeline Trace | A profiling approach where durations of compute kernels and data transfers between devices are collected and visualized |
-| [Roofline Analysis](https://enccs.github.io/AMD-ROCm-development/hierarchical_roofline/) | Hardware agnostic methodology for quantifying a workload's ability to saturate the given compute architecture in terms of floating-point compute and memory bandwidth |
+| [HIP](https://rocm.docs.amd.com/projects/HIP/en/latest/user_guide/programming_manual.html) | A C++ Runtime API and kernel language that allows developers to create portable compute kernels/applications for AMD and NVIDIA GPUs from a single source code |
+| [Timeline Trace](https://amdresearch.github.io/omnitrace/output.html#perfetto-output) | A profiling approach where durations of compute kernels and data transfers between devices are collected and visualized |
+| [Roofline Analysis](https://amdresearch.github.io/omniperf/profiling.html#standalone-roofline) | Hardware agnostic methodology for quantifying a workload's ability to saturate the given compute architecture in terms of floating-point compute and memory bandwidth |
 | Hardware Counters | Individual metrics which track how many times a certain event occurs in the hardware, such as bytes moved from L2 cache or a 32 bit floating point add performed |
 
 ## What tools to use?
@@ -223,7 +222,7 @@ and collecting counters during the execution.
 
 The `rocprof` utility also depends on the
 [ROC-tracer](https://github.com/ROCm-Developer-Tools/roctracer) and
-[ROC-TX](https://docs.amd.com/en-US/bundle/ROCTracer-User-Guide-v5.0-/page/ROCTX_Application_Code_Annotation.html)
+[ROC-TX](https://rocm.docs.amd.com/projects/roctracer/en/latest/roctracer_spec.html#)
 libraries, giving it the ability to collect timeline traces of the GPU software stack
 as well as user anotated code regions. Note that `rocprof` is a command-line only
 utility so input and output takes the format of txt and CSV files. These formats
@@ -234,8 +233,8 @@ but requires extra effort to analyze the collected data.
 ### Radeon&trade; GPU Profiler
 
 The [Radeon&trade; GPU Profiler](https://radeon-gpuprofiler.readthedocs.io/en/latest/) is a performance tool that can be used by traditional
-gaming and visualization developers to optimize DirectX 12 (DX12), Vulkan&trade; for AMD
-RDNA&trade; and GCN hardware. The Radeon&trade; GPU Profiler (RGP) is a ground-breaking
+gaming and visualization developers to optimize DirectX 12 (DX12) and Vulkan&trade; for AMD
+RDNA&trade; hardware. The Radeon&trade; GPU Profiler (RGP) is a ground-breaking
 low-level optimization tool from AMD. It provides detailed timing information
 on Radeon&trade; Graphics using custom, built-in, hardware thread-tracing, allowing
 the developer deep inspection of GPU workloads.  This unique tool generates
